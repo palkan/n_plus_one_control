@@ -4,6 +4,8 @@
 
 RSpec and Minitest matchers to prevent the N+1 queries problem.
 
+<img src="https://s3.amazonaws.com/anycable/n_plus_one_control.png" alt="Example output" width="553px">
+
 ### Why yet another gem to assert DB queries?
 
 Unlike other libraries (such as [db-query-matchers](https://github.com/brigade/db-query-matchers), [rspec-sqlimit](https://github.com/nepalez/rspec-sqlimit), etc), with `n_plus_one_control` you don't have to specify exact expectations to control your code behaviour (e.g. `expect { subject }.to query(2).times`).
@@ -11,6 +13,8 @@ Unlike other libraries (such as [db-query-matchers](https://github.com/brigade/d
 Such expectations are rather hard to maintain, 'cause there is a big chance of adding more queries, not related to the system under test.
 
 NPlusOneControl works differently. It evaluates the code under consideration several times with different scale factors to make sure that the number of DB queries behaves as expected (i.e. O(1) instead of O(N)).
+
+So, it's for _performance_ testing and not _feature_ testing.
 
 ### Why not just use [`bullet`](https://github.com/flyerhzm/bullet)?
 
