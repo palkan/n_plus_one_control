@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-shared_context "n_plus_one_control", n_plus_one: true do
+::RSpec.shared_context "n_plus_one_control", n_plus_one: true do
   # Helper to access populate block from within example/matcher
   let(:n_plus_one_populate) do |ex|
     if ex.example_group.populate.nil?

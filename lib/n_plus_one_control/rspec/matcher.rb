@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable  Metrics/BlockLength
-RSpec::Matchers.define :perform_constant_number_of_queries do
+::RSpec::Matchers.define :perform_constant_number_of_queries do
   supports_block_expectations
 
   chain :with_scale_factors do |*factors|

@@ -33,5 +33,3 @@ module NPlusOneControl
   # but can also track rom-rb events ('sql.rom') as well.
   self.event = 'sql.active_record'
 end
-
-require "n_plus_one_control/rspec" if defined?(RSpec)

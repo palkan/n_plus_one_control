@@ -1,3 +1,5 @@
+[![Gem Version](https://badge.fury.io/rb/n_plus_one_control.svg)](https://rubygems.org/gems/n_plus_one_control) [![Build Status](https://travis-ci.org/palkan/n_plus_one_control.svg?branch=master)](https://travis-ci.org/palkan/n_plus_one_control)
+
 # N + 1 Control
 
 RSpec and Minitest matchers to prevent the N+1 queries problem.
@@ -15,6 +17,9 @@ NPlusOneControl works differently. It evaluates the code under consideration sev
 Of course, it's possible to use Bullet in tests (see more [here](https://evilmartians.com/chronicles/fighting-the-hydra-of-n-plus-one-queries)), but it's not a _silver bullet_: there can be both false positives and true negatives.
 
 This gem was born after I've found myself not able to verify with a test yet another N+1 problem.
+
+<a href="https://evilmartians.com/">
+<img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54"></a>
 
 ## Installation
 
@@ -34,7 +39,16 @@ And then execute:
 
 ### RSpec
 
-Example:
+First, add NPlusOneControl to your `spec_helper.rb`:
+
+```ruby
+# spec_helper.rb
+...
+
+require "n_plus_one_control/rspec"
+```
+
+Then:
 
 ```ruby
 # Wrap example into a context with :n_plus_one tag
@@ -153,6 +167,26 @@ self.event = 'sql.active_record'
 ## How does it work?
 
 Take a look at our [Executor](https://github.com/palkan/test-prof/tree/master/lib/n_plus_one_control/executor.rb) to figure out what's under the hood.
+
+## What's next?
+
+It may be useful to provide more matchers/assertions, for example:
+
+```ruby
+
+# Actually, that means that it is N+1))
+assert_linear_number_of_queries { ... } 
+
+# But we can tune it with `coef` and handle such cases as selecting in batches
+assert_linear_number_of_queries(coef: 0.1) do
+  Post.find_in_batches { ... }
+end
+
+# probably, also make sense to add another curve types
+assert_logarithmic_number_of_queries { ... }
+```
+
+If you want to discuss or implement any of these, feel free to open an [issue]() or propose a [pull request]().
 
 ## Development
 
