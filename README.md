@@ -170,7 +170,7 @@ self.event = 'sql.active_record'
 
 ## How does it work?
 
-Take a look at our [Executor](https://github.com/palkan/test-prof/tree/master/lib/n_plus_one_control/executor.rb) to figure out what's under the hood.
+Take a look at our [Executor](https://github.com/palkan/n_plus_one_control/blob/master/lib/n_plus_one_control/executor.rb) to figure out what's under the hood.
 
 ## What's next?
 
