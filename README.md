@@ -190,7 +190,7 @@ end
 assert_logarithmic_number_of_queries { ... }
 ```
 
-If you want to discuss or implement any of these, feel free to open an [issue]() or propose a [pull request]().
+If you want to discuss or implement any of these, feel free to open an [issue](https://github.com/palkan/n_plus_one_control/issues) or propose a [pull request](https://github.com/palkan/n_plus_one_control/pulls).
 
 ## Development
 
