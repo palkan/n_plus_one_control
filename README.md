@@ -1,6 +1,6 @@
 # N + 1 Control
 
-RSpec and Minitest matchers to prevent N+1 queries problem.
+RSpec and Minitest matchers to prevent the N+1 queries problem.
 
 ### Why yet another gem to assert DB queries?
 
@@ -76,8 +76,58 @@ expect { ... }.to perform_constant_number_of_queries.with_scale_factors(10, 100)
 
 ### Minitest
 
-TBD
+First, add NPlusOneControl to your `test_helper.rb`:
 
+```ruby
+# test_helper.rb
+...
+
+require "n_plus_one_control/minitest"
+```
+
+Then use `assert_perform_constant_number_of_queries` assertion method:
+
+```ruby
+def test_no_n_plus_one_error
+  populate = ->(n) { create_list(:post, n) }
+
+  assert_perform_constant_number_of_queries(populate: populate) do
+    get :index
+  end
+end
+```
+
+You can also specify custom scale factors or filter patterns:
+
+```ruby
+assert_perform_constant_number_of_queries(
+  populate: populate,
+  scale_factors: [2, 5, 10]
+) do
+  get :index
+end
+
+assert_perform_constant_number_of_queries(
+  populate: populate,
+  matching: /INSERT/
+) do
+  do_some_havey_stuff
+end
+```
+
+You can also specify `populate` as a test class instance method:
+
+```ruby
+def populate(n)
+  create_list(:post, n)
+end
+
+def test_no_n_plus_one_error
+  assert_perform_constant_number_of_queries do
+    get :index
+  end
+end
+```
 
 ### Configuration
 
@@ -88,7 +138,7 @@ There are some global configuration parameters (and their corresponding defaults
 # We use the smallest possible but representative scale factors by default.
 self.default_scale_factors = [2, 3]
 
-# Print performed queries if true in case of failure
+# Print performed queries if true in the case of failure
 self.verbose = false
 
 # Ignore matching queries

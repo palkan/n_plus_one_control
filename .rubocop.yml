@@ -26,6 +26,7 @@ Style/TrivialAccessors:
 Style/Documentation:
   Exclude:
     - 'spec/**/*.rb'
+    - 'tests/**/*.rb'
 
 Style/StringLiterals: 
   Enabled: false

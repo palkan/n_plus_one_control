@@ -39,13 +39,5 @@ RSpec::Matchers.define :perform_constant_number_of_queries do
     raise "This matcher doesn't support negation"
   end
 
-  failure_message do |_actual|
-    msg = ["Expected to make the same number of queries, but got:\n"]
-    @queries.each do |(scale, data)|
-      msg << "  #{data.size} for N=#{scale}\n"
-      msg << data.map { |sql| "    #{sql}\n" }.join.to_s if
-        NPlusOneControl.verbose
-    end
-    msg.join
-  end
+  failure_message { |_actual| NPlusOneControl.failure_message(@queries) }
 end

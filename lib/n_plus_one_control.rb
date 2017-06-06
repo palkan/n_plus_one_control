@@ -7,13 +7,22 @@ require "n_plus_one_control/executor"
 module NPlusOneControl
   class << self
     attr_accessor :default_scale_factors, :verbose, :ignore, :event
+
+    def failure_message(queries)
+      msg = ["Expected to make the same number of queries, but got:\n"]
+      queries.each do |(scale, data)|
+        msg << "  #{data.size} for N=#{scale}\n"
+        msg << data.map { |sql| "    #{sql}\n" }.join.to_s if verbose
+      end
+      msg.join
+    end
   end
 
   # Scale factors to use.
   # Use the smallest possible but representative scale factors by default.
   self.default_scale_factors = [2, 3]
 
-  # Print perfromed queries if true
+  # Print performed queries if true
   self.verbose = false
 
   # Ignore matching queries
