@@ -154,18 +154,19 @@ There are some global configuration parameters (and their corresponding defaults
 ```ruby
 # Default scale factors to use.
 # We use the smallest possible but representative scale factors by default.
-self.default_scale_factors = [2, 3]
+NPlusOneControl.default_scale_factors = [2, 3]
 
 # Print performed queries if true in the case of failure
-self.verbose = false
+# You can activate verbosity through env variable NPLUSONE_VERBOSE=1
+NPlusOneControl.verbose = false
 
 # Ignore matching queries
-self.ignore = /^(BEGIN|COMMIT|SAVEPOINT|RELEASE)/
+NPlusOneControl.ignore = /^(BEGIN|COMMIT|SAVEPOINT|RELEASE)/
 
 # ActiveSupport notifications event to track queries.
 # We track ActiveRecord event by default,
 # but can also track rom-rb events ('sql.rom') as well.
-self.event = 'sql.active_record'
+NPlusOneControl.event = 'sql.active_record'
 ```
 
 ## How does it work?

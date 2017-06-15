@@ -23,7 +23,7 @@ module NPlusOneControl
   self.default_scale_factors = [2, 3]
 
   # Print performed queries if true
-  self.verbose = false
+  self.verbose = ENV['NPLUSONE_VERBOSE'] == '1'
 
   # Ignore matching queries
   self.ignore = /^(BEGIN|COMMIT|SAVEPOINT|RELEASE)/
