@@ -5,7 +5,7 @@
   let(:n_plus_one_populate) do |ex|
     if ex.example_group.populate.nil?
       raise(
-        <<~MSG
+        <<-MSG
           Populate block is missing!
 
           Please provide populate callback, e.g.:
