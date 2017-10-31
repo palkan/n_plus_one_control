@@ -173,10 +173,10 @@ NPlusOneControl.event = 'sql.active_record'
 NPlusOneControl::Executor.tap do |executor|
   connections = ActiveRecord::Base.connection_handler.connection_pool_list.map(&:connection)
 
-  executor.transaction_begin = -> do
+  executor.transaction_begin = proc do
     connections.each { |connection| connection.begin_transaction(joinable: false) }
   end
-  executor.transaction_rollback = -> do
+  executor.transaction_rollback = proc do
     connections.each(&:rollback_transaction)
   end
 end
