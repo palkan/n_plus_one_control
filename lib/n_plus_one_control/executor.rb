@@ -26,6 +26,9 @@ module NPlusOneControl
     end
 
     class << self
+      attr_accessor :transaction_begin
+      attr_accessor :transaction_rollback
+
       def call(population:, scale_factors: nil, matching: nil)
         raise ArgumentError, "Block is required!" unless block_given?
 
@@ -43,12 +46,18 @@ module NPlusOneControl
 
       private
 
-      def with_transaction
-        return yield unless defined?(ActiveRecord)
+      transaction_begin = -> do
         ActiveRecord::Base.connection.begin_transaction(joinable: false)
+      end
+      transaction_rollback = -> do
+        ActiveRecord::Base.connection.rollback_transaction
+      end
+
+      def with_transaction
+        transaction_begin.call
         yield
       ensure
-        ActiveRecord::Base.connection.rollback_transaction
+        transaction_rollback.call
       end
     end
   end

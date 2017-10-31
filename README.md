@@ -167,6 +167,19 @@ NPlusOneControl.ignore = /^(BEGIN|COMMIT|SAVEPOINT|RELEASE)/
 # We track ActiveRecord event by default,
 # but can also track rom-rb events ('sql.rom') as well.
 NPlusOneControl.event = 'sql.active_record'
+
+# configure transactional behavour for populate method
+# in case of use multiple database connections
+NPlusOneControl::Executor.tap do |executor|
+  connections = ActiveRecord::Base.connection_handler.connection_pool_list.map(&:connection)
+
+  executor.transaction_begin = -> do
+    connections.each { |connection| connection.begin_transaction(joinable: false) }
+  end
+  executor.transaction_rollback = -> do
+    connections.each(&:rollback_transaction)
+  end
+end
 ```
 
 ## How does it work?
@@ -180,7 +193,7 @@ It may be useful to provide more matchers/assertions, for example:
 ```ruby
 
 # Actually, that means that it is N+1))
-assert_linear_number_of_queries { ... } 
+assert_linear_number_of_queries { ... }
 
 # But we can tune it with `coef` and handle such cases as selecting in batches
 assert_linear_number_of_queries(coef: 0.1) do
@@ -211,4 +224,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/palkan
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
