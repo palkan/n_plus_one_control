@@ -54,10 +54,10 @@ module NPlusOneControl
       end
     end
 
-    self.transaction_begin = -> do
+    self.transaction_begin = proc do
       ActiveRecord::Base.connection.begin_transaction(joinable: false)
     end
-    self.transaction_rollback = -> do
+    self.transaction_rollback = proc do
       ActiveRecord::Base.connection.rollback_transaction
     end
   end
