@@ -46,19 +46,19 @@ module NPlusOneControl
 
       private
 
-      transaction_begin = -> do
-        ActiveRecord::Base.connection.begin_transaction(joinable: false)
-      end
-      transaction_rollback = -> do
-        ActiveRecord::Base.connection.rollback_transaction
-      end
-
       def with_transaction
         transaction_begin.call
         yield
       ensure
         transaction_rollback.call
       end
+    end
+
+    self.transaction_begin = -> do
+      ActiveRecord::Base.connection.begin_transaction(joinable: false)
+    end
+    self.transaction_rollback = -> do
+      ActiveRecord::Base.connection.rollback_transaction
     end
   end
 end
