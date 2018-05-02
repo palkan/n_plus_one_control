@@ -3,7 +3,7 @@
 require "minitest/autorun"
 require "minitest/pride"
 
-$LOAD_PATH << File.expand_path("../../lib", __FILE__)
+$LOAD_PATH << File.expand_path('../lib', __dir__)
 Thread.abort_on_exception = true
 
 require "n_plus_one_control/minitest"

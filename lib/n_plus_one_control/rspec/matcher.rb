@@ -41,3 +41,4 @@
 
   failure_message { |_actual| NPlusOneControl.failure_message(@queries) }
 end
+# rubocop:enable  Metrics/BlockLength

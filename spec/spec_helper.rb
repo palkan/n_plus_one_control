@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-$LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
+$LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require "n_plus_one_control/rspec"
 require "benchmark"
 require "active_record"

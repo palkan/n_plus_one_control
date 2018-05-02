@@ -17,6 +17,9 @@ AllCops:
 Rails:
   Enabled: false
 
+Naming/UncommunicativeMethodParamName:
+  Enabled: false
+
 Style/AccessorMethodName:
   Enabled: false
 
