@@ -19,6 +19,9 @@
       @matcher_execution_context.respond_to?(:n_plus_one_populate)
 
     populate = @matcher_execution_context.n_plus_one_populate
+    warmup = @matcher_execution_context.n_plus_one_warmup
+
+    warmup.call if warmup.present?
 
     # by default we're looking for select queries
     pattern = @pattern || /^SELECT/i

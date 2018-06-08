@@ -20,7 +20,7 @@ Rails:
 Naming/UncommunicativeMethodParamName:
   Enabled: false
 
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Enabled: false
 
 Style/TrivialAccessors:
@@ -40,7 +40,7 @@ Style/RegexpLiteral:
 Style/Lambda:
   Enabled: false
 
-Style/SpaceInsideStringInterpolation:
+Layout/SpaceInsideStringInterpolation:
   EnforcedStyle: no_space
 
 Style/ClassAndModuleChildren:
