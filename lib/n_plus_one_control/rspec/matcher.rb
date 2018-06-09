@@ -12,6 +12,10 @@
     @pattern = pattern
   end
 
+  chain :with_warming_up do
+    @warmup = true
+  end
+
   match do |actual, *_args|
     raise ArgumentError, "Block is required" unless actual.is_a? Proc
 
@@ -19,7 +23,7 @@
       @matcher_execution_context.respond_to?(:n_plus_one_populate)
 
     populate = @matcher_execution_context.n_plus_one_populate
-    warmup = @matcher_execution_context.n_plus_one_warmup
+    warmup = @warmup ? actual : @matcher_execution_context.n_plus_one_warmup
 
     warmup.call if warmup.present?
 

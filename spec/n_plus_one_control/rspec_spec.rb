@@ -87,7 +87,7 @@ describe NPlusOneControl::RSpec do
 
     before do
       allow(cache).to receive(:setup).and_return(:result)
-      allow(NPlusOneControl::Executor).to receive(:call) { fail StandardError }
+      allow(NPlusOneControl::Executor).to receive(:call) { raise StandardError }
     end
 
     populate { |n| create_list(:post, n) }
@@ -99,6 +99,15 @@ describe NPlusOneControl::RSpec do
       expect do
         expect { Post.find_each(&:id) }.to perform_constant_number_of_queries
       end.to raise_error StandardError
+    end
+  end
+
+  context 'with_warming_up', :n_plus_one do
+    populate { |n| create_list(:post, n) }
+
+    it "runs actual one more time" do
+      expect(Post).to receive(:all).exactly(3).times
+      expect { Post.all }.to perform_constant_number_of_queries.with_warming_up
     end
   end
 end
