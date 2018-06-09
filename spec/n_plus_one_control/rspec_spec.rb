@@ -81,4 +81,24 @@ describe NPlusOneControl::RSpec do
         .to perform_constant_number_of_queries.matching(/posts/)
     end
   end
+
+  context 'with warming up', :n_plus_one do
+    let(:cache) { double "cache" }
+
+    before do
+      allow(cache).to receive(:setup).and_return(:result)
+      allow(NPlusOneControl::Executor).to receive(:call) { fail StandardError }
+    end
+
+    populate { |n| create_list(:post, n) }
+
+    warmup { cache.setup }
+
+    it "runs warmup before calling Executor" do
+      expect(cache).to receive(:setup)
+      expect do
+        expect { Post.find_each(&:id) }.to perform_constant_number_of_queries
+      end.to raise_error StandardError
+    end
+  end
 end

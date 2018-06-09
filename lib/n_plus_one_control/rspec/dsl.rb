@@ -2,7 +2,7 @@
 
 module NPlusOneControl
   module RSpec
-    # Extends RSpec ExampleGroup with populate method
+    # Extends RSpec ExampleGroup with populate & warmup methods
     module DSL
       # Setup warmup block, wich will run before matching
       # for example, if using cache, then later queries

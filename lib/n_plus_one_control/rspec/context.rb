@@ -17,5 +17,8 @@
     ->(n) { ex.instance_exec(n, &ex.example_group.populate) }
   end
 
-  let(:n_plus_one_warmup) { |ex| -> { ex.instance_exec &ex.example_group.warmup } }
+  let(:n_plus_one_warmup) do |ex|
+    return if ex.example_group.warmup.nil?
+    -> { ex.instance_exec(&ex.example_group.warmup) }
+  end
 end
