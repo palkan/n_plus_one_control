@@ -149,7 +149,7 @@ end
 
 ### With caching
 
-If you use caching, you can face the problem when first request performs more DB queries than others. The solution is:
+If you use caching you can face the problem when first request performs more DB queries than others. The solution is:
 
 ```ruby
 # RSpec
