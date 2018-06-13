@@ -147,6 +147,56 @@ def test_no_n_plus_one_error
 end
 ```
 
+### With caching
+
+If you use caching you can face the problem when first request performs more DB queries than others. The solution is:
+
+```ruby
+# RSpec
+
+context "N + 1", :n_plus_one do
+  populate { |n| create_list :post, n }
+  
+  warmup { get :index } # cache something must be cached
+  
+  specify do
+    expect { get :index }.to perform_constant_number_of_queries
+  end
+end
+
+# Minitest
+
+def populate(n)
+  create_list(:post, n)
+end
+
+def warmup
+  get :index
+end
+
+def test_no_n_plus_one_error
+  assert_perform_constant_number_of_queries do
+    get :index
+  end
+end
+
+# or with params
+
+def test_no_n_plus_one
+  populate = ->(n) { create_list(:post, n) }
+  warmup = -> { get :index }
+  
+  assert_perform_constant_number_of_queries population: populate, warmup: warmup do
+    get :index
+  end
+end
+```
+
+If your `warmup` and testing procs are identical, you can use:
+```ruby
+expext { get :index }.to perform_constant_number_of_queries.with_warming_up # RSpec only
+```
+
 ### Configuration
 
 There are some global configuration parameters (and their corresponding defaults):
