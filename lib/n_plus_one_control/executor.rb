@@ -21,6 +21,7 @@ module NPlusOneControl
 
       def callback(_name, _start, _finish, _message_id, values)
         return if %w[CACHE SCHEMA].include? values[:name]
+
         @queries << values[:sql] if @pattern.nil? || (values[:sql] =~ @pattern)
       end
     end

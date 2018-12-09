@@ -16,18 +16,6 @@ Gem::Specification.new do |spec|
 
     Evaluates code under consideration several times with different scale factors
     to make sure that the number of DB queries behaves as expected (i.e. O(1) instead of O(N)).
-
-    Example:
-
-      ```ruby
-      context "N+1", :n_plus_one do
-        populate { |n| create_list(:post, n) }
-
-        specify do
-          expect { get :index }.to perform_constant_number_of_queries
-        end
-      end
-      ```
   }
   spec.homepage      = "http://github.com/palkan/n_plus_one_control"
   spec.license       = "MIT"
@@ -40,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.5"
   spec.add_development_dependency "minitest", "~> 5.9"
   spec.add_development_dependency "factory_girl", "~> 4.8.0"
-  spec.add_development_dependency "rubocop", "~> 0.49"
+  spec.add_development_dependency "rubocop", "~> 0.61.0"
   spec.add_development_dependency "activerecord", "~> 5.1"
   spec.add_development_dependency "sqlite3"
   spec.add_development_dependency "pry-byebug"
