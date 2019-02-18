@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-::RSpec.shared_context "n_plus_one_control", n_plus_one: true do
+RSpec.shared_context "n_plus_one_control" do
   # Helper to access populate block from within example/matcher
   let(:n_plus_one_populate) do |ex|
     if ex.example_group.populate.nil?
@@ -22,4 +22,8 @@
 
     -> { ex.instance_exec(&ex.example_group.warmup) }
   end
+end
+
+RSpec.configure do |config|
+  config.include_context "n_plus_one_control", n_plus_one: true
 end
