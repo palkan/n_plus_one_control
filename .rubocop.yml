@@ -7,6 +7,7 @@ AllCops:
     - 'bin/**/*'
     - 'spec/dummy/**/*'
     - 'tmp/**/*'
+    - 'vendor/**/*'
     - 'Rakefile'
     - 'Gemfile'
     - '*.gemspec'
