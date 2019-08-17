@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "minitest", "~> 5.9"
   spec.add_development_dependency "factory_girl", "~> 4.8.0"
   spec.add_development_dependency "rubocop", "~> 0.61.0"
-  spec.add_development_dependency "activerecord", "~> 5.1"
+  spec.add_development_dependency "activerecord", "~> 6.0"
   spec.add_development_dependency "sqlite3", "~> 1.3.6"
   spec.add_development_dependency "pry-byebug"
 end
