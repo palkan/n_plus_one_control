@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+gem "rspec-core", ">= 3.5"
+
 require "n_plus_one_control"
 require "n_plus_one_control/rspec/dsl"
 require "n_plus_one_control/rspec/matcher"
