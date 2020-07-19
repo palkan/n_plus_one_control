@@ -30,12 +30,13 @@
     # by default we're looking for select queries
     pattern = @pattern || /^SELECT/i
 
-    @queries = NPlusOneControl::Executor.call(
+    @matcher_execution_context.executor = NPlusOneControl::Executor.new(
       population: populate,
       matching: pattern,
-      scale_factors: @factors,
-      &actual
+      scale_factors: @factors
     )
+
+    @queries = @matcher_execution_context.executor.call(&actual)
 
     counts = @queries.map(&:last).map(&:size)
 

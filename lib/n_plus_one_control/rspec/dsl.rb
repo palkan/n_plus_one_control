@@ -4,21 +4,29 @@ module NPlusOneControl
   module RSpec
     # Extends RSpec ExampleGroup with populate & warmup methods
     module DSL
-      # Setup warmup block, wich will run before matching
-      # for example, if using cache, then later queries
-      # will perform less DB queries than first
-      def warmup
-        return @warmup unless block_given?
+      module ClassMethods
+        # Setup warmup block, wich will run before matching
+        # for example, if using cache, then later queries
+        # will perform less DB queries than first
+        def warmup
+          return @warmup unless block_given?
 
-        @warmup = Proc.new
+          @warmup = Proc.new
+        end
+
+        # Setup populate callback, which is used
+        # to prepare data for each run.
+        def populate
+          return @populate unless block_given?
+
+          @populate = Proc.new
+        end
       end
 
-      # Setup populate callback, which is used
-      # to prepare data for each run.
-      def populate
-        return @populate unless block_given?
+      attr_accessor :executor
 
-        @populate = Proc.new
+      def scale
+        executor&.scale
       end
     end
   end

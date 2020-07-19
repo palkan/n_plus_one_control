@@ -12,20 +12,12 @@ describe NPlusOneControl::Executor do
   end
 
   it "raises when block is missing" do
-    expect { described_class.call(population: populate) }
+    expect { described_class.new(population: populate).call }
       .to raise_error(ArgumentError, "Block is required!")
   end
 
-  it "raises when populate is missing" do
-    expect { described_class.call(&observable) }
-      .to raise_error(ArgumentError, /population/)
-  end
-
   it "returns correct counts for default scales" do
-    result = described_class.call(
-      population: populate,
-      &observable
-    )
+    result = described_class.new(population: populate).call(&observable)
 
     expect(result.size).to eq 2
     expect(result.first[0]).to eq 2
@@ -35,11 +27,10 @@ describe NPlusOneControl::Executor do
   end
 
   it "returns correct counts for custom scales" do
-    result = described_class.call(
+    result = described_class.new(
       population: populate,
-      scale_factors: [5, 10, 100],
-      &observable
-    )
+      scale_factors: [5, 10, 100]
+    ).call(&observable)
 
     expect(result.size).to eq 3
     expect(result.first[0]).to eq 5
@@ -51,11 +42,10 @@ describe NPlusOneControl::Executor do
   end
 
   it "returns correct counts with custom match" do
-    result = described_class.call(
+    result = described_class.new(
       population: populate,
-      matching: /users/,
-      &observable
-    )
+      matching: /users/
+    ).call(&observable)
 
     expect(result.first[0]).to eq 2
     expect(result.first[1].size).to eq 2

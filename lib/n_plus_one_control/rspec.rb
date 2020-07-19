@@ -13,5 +13,6 @@ module NPlusOneControl
 end
 
 ::RSpec.configure do |config|
-  config.extend NPlusOneControl::RSpec::DSL, n_plus_one: true
+  config.extend NPlusOneControl::RSpec::DSL::ClassMethods, n_plus_one: true
+  config.include NPlusOneControl::RSpec::DSL, n_plus_one: true
 end

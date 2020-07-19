@@ -3,7 +3,7 @@
 module NPlusOneControl
   # Runs code for every scale factor
   # and returns collected queries.
-  module Executor
+  class Executor
     # Subscribes to ActiveSupport notifications and collect matching queries.
     class Collector
       def initialize(pattern)
@@ -29,37 +29,55 @@ module NPlusOneControl
     class << self
       attr_accessor :transaction_begin
       attr_accessor :transaction_rollback
-
-      def call(population:, scale_factors: nil, matching: nil)
-        raise ArgumentError, "Block is required!" unless block_given?
-
-        results = []
-        collector = Collector.new(matching)
-
-        (scale_factors || NPlusOneControl.default_scale_factors).each do |scale|
-          with_transaction do
-            population.call(scale)
-            results << [scale, collector.call { yield }]
-          end
-        end
-        results
-      end
-
-      private
-
-      def with_transaction
-        transaction_begin.call
-        yield
-      ensure
-        transaction_rollback.call
-      end
     end
+
+    attr_reader :scale
 
     self.transaction_begin = -> do
       ActiveRecord::Base.connection.begin_transaction(joinable: false)
     end
+
     self.transaction_rollback = -> do
       ActiveRecord::Base.connection.rollback_transaction
     end
+
+    def initialize(population: nil, scale_factors: nil, matching: nil)
+      @population, @scale_factors, @matching = population, scale_factors, matching
+    end
+
+    def call
+      raise ArgumentError, "Block is required!" unless block_given?
+
+      results = []
+      collector = Collector.new(matching)
+
+      (scale_factors || NPlusOneControl.default_scale_factors).each do |scale|
+        @scale = scale
+        with_transaction do
+          population&.call(scale)
+          results << [scale, collector.call { yield }]
+        end
+      end
+      results
+    end
+
+    private
+
+    def with_transaction
+      transaction_begin.call
+      yield
+    ensure
+      transaction_rollback.call
+    end
+
+    def transaction_begin
+      self.class.transaction_begin
+    end
+
+    def transaction_rollback
+      self.class.transaction_rollback
+    end
+
+    attr_reader :population, :scale_factors, :matching
   end
 end

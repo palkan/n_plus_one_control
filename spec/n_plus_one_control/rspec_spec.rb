@@ -31,14 +31,6 @@ describe NPlusOneControl::RSpec do
     end
   end
 
-  context "when populate is missing", :n_plus_one do
-    specify do
-      expect do
-        expect { subject }.to perform_constant_number_of_queries
-      end.to raise_error(/please provide populate/i)
-    end
-  end
-
   context "when negated" do
     specify do
       expect do
@@ -87,7 +79,6 @@ describe NPlusOneControl::RSpec do
 
     before do
       allow(cache).to receive(:setup).and_return(:result)
-      allow(NPlusOneControl::Executor).to receive(:call) { raise StandardError }
     end
 
     populate { |n| create_list(:post, n) }
@@ -96,9 +87,7 @@ describe NPlusOneControl::RSpec do
 
     it "runs warmup before calling Executor" do
       expect(cache).to receive(:setup)
-      expect do
-        expect { Post.find_each(&:id) }.to perform_constant_number_of_queries
-      end.to raise_error StandardError
+      expect { Post.find_each(&:id) }.to perform_constant_number_of_queries
     end
   end
 
@@ -108,6 +97,14 @@ describe NPlusOneControl::RSpec do
     it "runs actual one more time" do
       expect(Post).to receive(:all).exactly(3).times
       expect { Post.all }.to perform_constant_number_of_queries.with_warming_up
+    end
+  end
+
+  context 'with usage of scale instead of populate', :n_plus_one do
+    it "can use current scale", :aggregate_failures do
+      expect(Post).to receive(:limit).with(2).once
+      expect(Post).to receive(:limit).with(3).once
+      expect { Post.limit(scale) }.to perform_constant_number_of_queries
     end
   end
 end
