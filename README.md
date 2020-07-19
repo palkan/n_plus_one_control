@@ -92,6 +92,26 @@ expect { ... }.to perform_constant_number_of_queries.matching(/INSERT/)
 expect { ... }.to perform_constant_number_of_queries.with_scale_factors(10, 100)
 ```
 
+#### Using scale factor in spec
+
+Let's suppose your action accepts parameter, which can make impact on the number of returned records:
+
+```ruby
+get :index, params: { per_page: 10 }
+```
+
+Then it is enough to just change `per_page` parameter between executions and do not recreate records in DB. For this purpose, you can use `scale` method in your example:
+
+```ruby
+context "N+1", :n_plus_one do
+  before { create_list :post, 3 }
+
+  specify do
+    expect { get :index, params: { per_page: scale } }.to perform_constant_number_of_queries
+  end
+end
+```
+
 ### Minitest
 
 First, add NPlusOneControl to your `test_helper.rb`:
@@ -143,6 +163,16 @@ end
 def test_no_n_plus_one_error
   assert_perform_constant_number_of_queries do
     get :index
+  end
+end
+```
+
+As in RSpec, you can use `scale` factor instead of `populate` block:
+
+```ruby
+def test_no_n_plus_one_error
+  assert_perform_constant_number_of_queries do
+    get :index, params: { per_page: scale }
   end
 end
 ```
