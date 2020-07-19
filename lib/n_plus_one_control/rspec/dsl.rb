@@ -2,8 +2,9 @@
 
 module NPlusOneControl
   module RSpec
-    # Extends RSpec ExampleGroup with populate & warmup methods
+    # Includes scale method into RSpec Example
     module DSL
+      # Extends RSpec ExampleGroup with populate & warmup methods
       module ClassMethods
         # Setup warmup block, wich will run before matching
         # for example, if using cache, then later queries

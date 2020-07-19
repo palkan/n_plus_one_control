@@ -5,10 +5,6 @@ require "n_plus_one_control"
 module NPlusOneControl
   # Minitest assertions
   module MinitestHelper
-    def warming_up(warmup)
-      (warmup || methods.include?(:warmup) ? method(:warmup) : nil)&.call
-    end
-
     def assert_perform_constant_number_of_queries(
       populate: nil,
       matching: nil,
@@ -20,15 +16,31 @@ module NPlusOneControl
 
       warming_up warmup
 
-      queries = NPlusOneControl::Executor.call(
-        population: populate || method(:populate),
+      @executor = NPlusOneControl::Executor.new(
+        population: population_proc(populate),
         matching: matching || /^SELECT/i,
         scale_factors: scale_factors || NPlusOneControl.default_scale_factors
-      ) { yield }
+      )
+
+      queries = @executor.call { yield }
 
       counts = queries.map(&:last).map(&:size)
 
       assert counts.max == counts.min, NPlusOneControl.failure_message(queries)
+    end
+
+    def scale
+      @executor&.scale
+    end
+
+    private
+
+    def warming_up(warmup)
+      (warmup || methods.include?(:warmup) ? method(:warmup) : nil)&.call
+    end
+
+    def population_proc(populate)
+      (populate || methods.include?(:populate) ? method(:populate) : nil)
     end
   end
 end

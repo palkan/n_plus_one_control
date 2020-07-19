@@ -60,4 +60,13 @@ class TestMinitest < Minitest::Test
 
     assert_match "Expected to make the same number of queries", e.message
   end
+
+  def test_scale_avalability
+    mock = Minitest::Mock.new
+    NPlusOneControl.default_scale_factors.each do |scale_factor|
+      mock.expect :limit, nil, [scale_factor]
+    end
+
+    assert_perform_constant_number_of_queries { mock.limit(scale) }
+  end
 end
