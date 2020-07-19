@@ -42,9 +42,12 @@ module NPlusOneControl
     end
 
     def initialize(population: nil, scale_factors: nil, matching: nil)
-      @population, @scale_factors, @matching = population, scale_factors, matching
+      @population = population
+      @scale_factors = scale_factors
+      @matching = matching
     end
 
+    # rubocop:disable Metrics/MethodLength
     def call
       raise ArgumentError, "Block is required!" unless block_given?
 
@@ -60,6 +63,7 @@ module NPlusOneControl
       end
       results
     end
+    # rubocop:enable Metrics/MethodLength
 
     private
 

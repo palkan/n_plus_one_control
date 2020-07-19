@@ -95,15 +95,17 @@ describe NPlusOneControl::RSpec do
     populate { |n| create_list(:post, n) }
 
     it "runs actual one more time" do
-      expect(Post).to receive(:all).exactly(3).times
+      expect(Post).to receive(:all).exactly(NPlusOneControl.default_scale_factors.size + 1).times
       expect { Post.all }.to perform_constant_number_of_queries.with_warming_up
     end
   end
 
   context 'with usage of scale instead of populate', :n_plus_one do
     it "can use current scale", :aggregate_failures do
-      expect(Post).to receive(:limit).with(2).once
-      expect(Post).to receive(:limit).with(3).once
+      NPlusOneControl.default_scale_factors.each do |scale_factor|
+        expect(Post).to receive(:limit).with(scale_factor).once
+      end
+
       expect { Post.limit(scale) }.to perform_constant_number_of_queries
     end
   end
