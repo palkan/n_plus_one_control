@@ -1,7 +1,6 @@
-# coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'n_plus_one_control/version'
+# frozen_string_literal: true
+
+require_relative "lib/n_plus_one_control/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "n_plus_one_control"
@@ -19,11 +18,18 @@ Gem::Specification.new do |spec|
   }
   spec.homepage      = "http://github.com/palkan/n_plus_one_control"
   spec.license       = "MIT"
+  spec.metadata = {
+    "bug_tracker_uri" => "http://github.com/palkan/n_plus_one_control/issues",
+    "changelog_uri" => "https://github.com/palkan/n_plus_one_control/blob/master/CHANGELOG.md",
+    "documentation_uri" => "http://github.com/palkan/n_plus_one_control",
+    "homepage_uri" => "http://github.com/palkan/n_plus_one_control",
+    "source_code_uri" => "http://github.com/palkan/n_plus_one_control"
+  }
 
-  spec.files         = `git ls-files`.split($/)
+  spec.files         = Dir.glob("lib/**/*") + %w[README.md LICENSE.txt CHANGELOG.md]
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.10"
+  spec.add_development_dependency "bundler", ">= 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.5"
   spec.add_development_dependency "minitest", "~> 5.9"
