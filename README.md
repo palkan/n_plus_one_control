@@ -100,14 +100,14 @@ Let's suppose your action accepts parameter, which can make impact on the number
 get :index, params: { per_page: 10 }
 ```
 
-Then it is enough to just change `per_page` parameter between executions and do not recreate records in DB. For this purpose, you can use `scale` method in your example:
+Then it is enough to just change `per_page` parameter between executions and do not recreate records in DB. For this purpose, you can use `current_scale` method in your example:
 
 ```ruby
 context "N+1", :n_plus_one do
   before { create_list :post, 3 }
 
   specify do
-    expect { get :index, params: { per_page: scale } }.to perform_constant_number_of_queries
+    expect { get :index, params: { per_page: current_scale } }.to perform_constant_number_of_queries
   end
 end
 ```
@@ -167,12 +167,12 @@ def test_no_n_plus_one_error
 end
 ```
 
-As in RSpec, you can use `scale` factor instead of `populate` block:
+As in RSpec, you can use `current_scale` factor instead of `populate` block:
 
 ```ruby
 def test_no_n_plus_one_error
   assert_perform_constant_number_of_queries do
-    get :index, params: { per_page: scale }
+    get :index, params: { per_page: current_scale }
   end
 end
 ```

@@ -100,13 +100,13 @@ describe NPlusOneControl::RSpec do
     end
   end
 
-  context 'with usage of scale instead of populate', :n_plus_one do
-    it "can use current scale", :aggregate_failures do
+  context 'with usage of current_scale instead of populate', :n_plus_one do
+    it "can use current current_scale", :aggregate_failures do
       NPlusOneControl.default_scale_factors.each do |scale_factor|
         expect(Post).to receive(:limit).with(scale_factor).once
       end
 
-      expect { Post.limit(scale) }.to perform_constant_number_of_queries
+      expect { Post.limit(current_scale) }.to perform_constant_number_of_queries
     end
   end
 end
