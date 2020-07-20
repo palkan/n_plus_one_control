@@ -26,8 +26,8 @@ module NPlusOneControl
 
       attr_accessor :executor
 
-      def scale
-        executor&.scale
+      def current_scale
+        executor&.current_scale
       end
     end
   end

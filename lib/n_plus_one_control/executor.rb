@@ -31,7 +31,7 @@ module NPlusOneControl
       attr_accessor :transaction_rollback
     end
 
-    attr_reader :scale
+    attr_reader :current_scale
 
     self.transaction_begin = -> do
       ActiveRecord::Base.connection.begin_transaction(joinable: false)
@@ -55,7 +55,7 @@ module NPlusOneControl
       collector = Collector.new(matching)
 
       (scale_factors || NPlusOneControl.default_scale_factors).each do |scale|
-        @scale = scale
+        @current_scale = scale
         with_transaction do
           population&.call(scale)
           results << [scale, collector.call { yield }]

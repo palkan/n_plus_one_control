@@ -29,8 +29,8 @@ module NPlusOneControl
       assert counts.max == counts.min, NPlusOneControl.failure_message(queries)
     end
 
-    def scale
-      @executor&.scale
+    def current_scale
+      @executor&.current_scale
     end
 
     private
