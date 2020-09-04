@@ -19,10 +19,26 @@ module NPlusOneControl
         @queries
       end
 
-      def callback(_name, _start, _finish, _message_id, values)
+      def callback(_name, _start, _finish, _message_id, values) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/LineLength
         return if %w[CACHE SCHEMA].include? values[:name]
 
-        @queries << values[:sql] if @pattern.nil? || (values[:sql] =~ @pattern)
+        return unless @pattern.nil? || (values[:sql] =~ @pattern)
+
+        query = values[:sql]
+
+        if NPlusOneControl.backtrace_cleaner && NPlusOneControl.verbose
+          source = extract_query_source_location(caller)
+
+          query = "#{query}\n    ↳ #{source}" if source
+        end
+
+        @queries << query
+      end
+
+      private
+
+      def extract_query_source_location(locations)
+        NPlusOneControl.backtrace_cleaner.call(locations.lazy).first
       end
     end
 

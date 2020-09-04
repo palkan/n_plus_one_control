@@ -52,7 +52,7 @@ describe NPlusOneControl::RSpec do
       expect do
         expect { Post.find_each { |p| p.user.name } }
           .to perform_constant_number_of_queries
-      end.to raise_error(RSpec::Expectations::ExpectationNotMetError, /select .+ from/i)
+      end.to raise_error(RSpec::Expectations::ExpectationNotMetError, /select .+ from.*↳ .*rspec_spec.rb:53/im)
     end
   end
 

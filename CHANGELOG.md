@@ -1,5 +1,7 @@
 ## master (unreleased)
 
+- Add location tracing to SQLs in verbose mode. ([@palkan][])
+
 ## 0.4.1 (2020-09-04)
 
 - Enhance failure message by showing differences in table hits. ([@palkan][])

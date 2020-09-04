@@ -7,6 +7,8 @@ require "active_record"
 require "factory_girl"
 require "pry-byebug"
 
+NPlusOneControl.backtrace_cleaner = ->(locations) { locations.grep(/#{__dir__}\//) }
+
 ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
 
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }

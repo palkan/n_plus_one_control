@@ -268,6 +268,12 @@ NPlusOneControl::Executor.tap do |executor|
     connections.each(&:rollback_transaction)
   end
 end
+
+# Provide a backtrace cleaner callable object used to filter SQL caller location to display in the verbose mode
+# Set it to nil to disable tracing.
+#
+# In Rails apps, we use Rails.backtrace_cleaner by default.
+NPlusOneControl.backtrace_cleaner = ->(locations_array) { do_some_filtering(locations_array) }
 ```
 
 ## How does it work?

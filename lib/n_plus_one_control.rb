@@ -18,7 +18,8 @@ module NPlusOneControl
   }.freeze
 
   class << self
-    attr_accessor :default_scale_factors, :verbose, :show_table_stats, :ignore, :event
+    attr_accessor :default_scale_factors, :verbose, :show_table_stats, :ignore, :event,
+                  :backtrace_cleaner
 
     def failure_message(queries) # rubocop:disable Metrics/MethodLength
       msg = ["Expected to make the same number of queries, but got:\n"]
@@ -30,8 +31,8 @@ module NPlusOneControl
 
       if verbose
         queries.each do |(scale, data)|
-          msg << "  Queries for N=#{scale}\n"
-          msg << data.map { |sql| "    #{sql}\n" }.join.to_s
+          msg << "Queries for N=#{scale}\n"
+          msg << data.map { |sql| "  #{sql}\n" }.join.to_s
         end
       end
 
@@ -39,7 +40,7 @@ module NPlusOneControl
     end
 
     def table_usage_stats(runs) # rubocop:disable Metrics/MethodLength
-      msg = ["\nUnmatched query numbers by tables:\n"]
+      msg = ["Unmatched query numbers by tables:\n"]
 
       before, after = runs.map do |queries|
         queries.group_by do |query|
@@ -78,3 +79,5 @@ module NPlusOneControl
   # but can also track rom-rb events ('sql.rom') as well.
   self.event = 'sql.active_record'
 end
+
+require "n_plus_one_control/railtie" if defined?(Rails::Railtie)
