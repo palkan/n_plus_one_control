@@ -1,5 +1,7 @@
 ## master (unreleased)
 
+- Support passing default filter via `NPLUSONE_FILTER` env var. ([@palkan][])
+
 - Add location tracing to SQLs in verbose mode. ([@palkan][])
 
 ## 0.4.1 (2020-09-04)

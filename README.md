@@ -153,6 +153,12 @@ assert_perform_constant_number_of_queries(
 end
 ```
 
+It's possible to specify a filter via `NPLUSONE_FILTER` env var, e.g.:
+
+```ruby
+NPLUSONE_FILTER=users bundle exec rake test
+```
+
 You can also specify `populate` as a test class instance method:
 
 ```ruby
@@ -223,6 +229,7 @@ end
 ```
 
 If your `warmup` and testing procs are identical, you can use:
+
 ```ruby
 expext { get :index }.to perform_constant_number_of_queries.with_warming_up # RSpec only
 ```

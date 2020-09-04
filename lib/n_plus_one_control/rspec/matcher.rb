@@ -27,8 +27,7 @@
 
     warmup.call if warmup.present?
 
-    # by default we're looking for select queries
-    pattern = @pattern || /^SELECT/i
+    pattern = @pattern || NPlusOneControl.default_matching
 
     @matcher_execution_context.executor = NPlusOneControl::Executor.new(
       population: populate,

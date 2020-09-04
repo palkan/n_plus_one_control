@@ -89,6 +89,21 @@ describe NPlusOneControl::RSpec do
       expect { Post.find_each { |p| p.user.name } }
         .to perform_constant_number_of_queries.matching(/posts/)
     end
+
+    context "with matching is provided globally", :n_plus_one do
+      around(:each) do |ex|
+        NPlusOneControl.default_matching = "posts"
+        ex.run
+        NPlusOneControl.default_matching = nil
+      end
+
+      populate { |n| create_list(:post, n) }
+
+      specify do
+        expect { Post.find_each { |p| p.user.name } }
+          .to perform_constant_number_of_queries
+      end
+    end
   end
 
   context 'with warming up', :n_plus_one do

@@ -18,7 +18,7 @@ module NPlusOneControl
 
       @executor = NPlusOneControl::Executor.new(
         population: populate || population_method,
-        matching: matching || /^SELECT/i,
+        matching: matching || NPlusOneControl.default_matching,
         scale_factors: scale_factors || NPlusOneControl.default_scale_factors
       )
 

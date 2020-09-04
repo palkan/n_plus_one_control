@@ -21,6 +21,8 @@ module NPlusOneControl
     attr_accessor :default_scale_factors, :verbose, :show_table_stats, :ignore, :event,
                   :backtrace_cleaner
 
+    attr_reader :default_matching
+
     def failure_message(queries) # rubocop:disable Metrics/MethodLength
       msg = ["Expected to make the same number of queries, but got:\n"]
       queries.each do |(scale, data)|
@@ -59,6 +61,20 @@ module NPlusOneControl
 
       msg
     end
+
+    def default_matching=(val)
+      unless val
+        @default_matching = nil
+        return
+      end
+
+      @default_matching =
+        if val.is_a?(Regexp)
+          val
+        else
+          Regexp.new(val, Regexp::MULTILINE | Regexp::IGNORECASE)
+        end
+    end
   end
 
   # Scale factors to use.
@@ -78,6 +94,9 @@ module NPlusOneControl
   # We track ActiveRecord event by default,
   # but can also track rom-rb events ('sql.rom') as well.
   self.event = 'sql.active_record'
+
+  # Default query filtering applied if none provided explicitly
+  self.default_matching = ENV['NPLUSONE_FILTER'] || /^SELECT/i
 end
 
 require "n_plus_one_control/railtie" if defined?(Rails::Railtie)
