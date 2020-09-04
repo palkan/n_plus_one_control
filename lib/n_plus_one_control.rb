@@ -20,14 +20,20 @@ module NPlusOneControl
   class << self
     attr_accessor :default_scale_factors, :verbose, :show_table_stats, :ignore, :event
 
-    def failure_message(queries)
+    def failure_message(queries) # rubocop:disable Metrics/MethodLength
       msg = ["Expected to make the same number of queries, but got:\n"]
       queries.each do |(scale, data)|
         msg << "  #{data.size} for N=#{scale}\n"
-        msg << data.map { |sql| "    #{sql}\n" }.join.to_s if verbose
       end
 
       msg.concat(table_usage_stats(queries.map(&:last))) if show_table_stats
+
+      if verbose
+        queries.each do |(scale, data)|
+          msg << "  Queries for N=#{scale}\n"
+          msg << data.map { |sql| "    #{sql}\n" }.join.to_s
+        end
+      end
 
       msg.join
     end
