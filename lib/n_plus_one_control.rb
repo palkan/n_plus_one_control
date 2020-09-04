@@ -19,7 +19,7 @@ module NPlusOneControl
 
   class << self
     attr_accessor :default_scale_factors, :verbose, :show_table_stats, :ignore, :event,
-                  :backtrace_cleaner, :truncate_query_size
+                  :backtrace_cleaner, :backtrace_length, :truncate_query_size
 
     attr_reader :default_matching
 
@@ -118,6 +118,9 @@ module NPlusOneControl
 
   # Truncate queries in verbose mode to fit the length
   self.truncate_query_size = ENV['NPLUSONE_TRUNCATE']&.to_i
+
+  # Define the number of backtrace lines to show
+  self.backtrace_length = ENV.fetch('NPLUSONE_BACKTRACE', 1).to_i
 end
 
 require "n_plus_one_control/railtie" if defined?(Rails::Railtie)

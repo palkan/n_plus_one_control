@@ -29,7 +29,7 @@ module NPlusOneControl
         if NPlusOneControl.backtrace_cleaner && NPlusOneControl.verbose
           source = extract_query_source_location(caller)
 
-          query = "#{query}\n    ↳ #{source}" if source
+          query = "#{query}\n    ↳ #{source.join("\n")}" unless source.empty?
         end
 
         @queries << query
@@ -38,7 +38,8 @@ module NPlusOneControl
       private
 
       def extract_query_source_location(locations)
-        NPlusOneControl.backtrace_cleaner.call(locations.lazy).first
+        NPlusOneControl.backtrace_cleaner.call(locations.lazy)
+                       .take(NPlusOneControl.backtrace_length).to_a
       end
     end
 

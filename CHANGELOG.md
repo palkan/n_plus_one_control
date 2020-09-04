@@ -1,5 +1,9 @@
 ## master (unreleased)
 
+- Add support for multiple backtrace lines in verbose output. ([@palkan][])
+
+Could be specified via `NPLUSONE_BACKTRACE` env var.
+
 - Add `NPLUSONE_TRUNCATE` env var to truncate queries in verbose mode. ([@palkan][])
 
 - Support passing default filter via `NPLUSONE_FILTER` env var. ([@palkan][])

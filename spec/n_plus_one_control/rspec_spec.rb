@@ -71,6 +71,26 @@ describe NPlusOneControl::RSpec do
         end.to raise_error(RSpec::Expectations::ExpectationNotMetError, /sel\.\.\./i)
       end
     end
+
+    context "when backtrace length is specified" do
+      populate { |n| create_list(:post, n) }
+
+      around(:each) do |ex|
+        NPlusOneControl.backtrace_length = 2
+        ex.run
+        NPlusOneControl.backtrace_length = nil
+      end
+
+      specify do
+        expect do
+          expect { Post.find_each { |p| p.user.name } }
+            .to perform_constant_number_of_queries
+        end.to raise_error(
+          RSpec::Expectations::ExpectationNotMetError,
+          /select .+ from.*↳.*rspec_spec.rb:86.*\n.*rspec_spec.rb:86/im
+        )
+      end
+    end
   end
 
   context "with table stats", :n_plus_one do
