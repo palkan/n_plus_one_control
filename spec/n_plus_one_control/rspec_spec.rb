@@ -54,6 +54,23 @@ describe NPlusOneControl::RSpec do
           .to perform_constant_number_of_queries
       end.to raise_error(RSpec::Expectations::ExpectationNotMetError, /select .+ from.*↳ .*rspec_spec.rb:53/im)
     end
+
+    context "when truncate size is specified" do
+      populate { |n| create_list(:post, n) }
+
+      around(:each) do |ex|
+        NPlusOneControl.truncate_query_size = 6
+        ex.run
+        NPlusOneControl.truncate_query_size = nil
+      end
+
+      specify do
+        expect do
+          expect { Post.find_each { |p| p.user.name } }
+            .to perform_constant_number_of_queries
+        end.to raise_error(RSpec::Expectations::ExpectationNotMetError, /sel\.\.\./i)
+      end
+    end
   end
 
   context "with table stats", :n_plus_one do

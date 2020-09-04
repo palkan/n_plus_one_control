@@ -19,7 +19,7 @@ module NPlusOneControl
 
   class << self
     attr_accessor :default_scale_factors, :verbose, :show_table_stats, :ignore, :event,
-                  :backtrace_cleaner
+                  :backtrace_cleaner, :truncate_query_size
 
     attr_reader :default_matching
 
@@ -34,7 +34,7 @@ module NPlusOneControl
       if verbose
         queries.each do |(scale, data)|
           msg << "Queries for N=#{scale}\n"
-          msg << data.map { |sql| "  #{sql}\n" }.join.to_s
+          msg << data.map { |sql| "  #{truncate_query(sql)}\n" }.join.to_s
         end
       end
 
@@ -75,6 +75,24 @@ module NPlusOneControl
           Regexp.new(val, Regexp::MULTILINE | Regexp::IGNORECASE)
         end
     end
+
+    private
+
+    def truncate_query(sql)
+      return sql unless truncate_query_size
+
+      # Only truncate query, leave tracing (if any) as is
+      parts = sql.split(/(\s+↳)/)
+
+      parts[0] =
+        if truncate_query_size < 4
+          "..."
+        else
+          parts[0][0..(truncate_query_size - 4)] + "..."
+        end
+
+      parts.join
+    end
   end
 
   # Scale factors to use.
@@ -97,6 +115,9 @@ module NPlusOneControl
 
   # Default query filtering applied if none provided explicitly
   self.default_matching = ENV['NPLUSONE_FILTER'] || /^SELECT/i
+
+  # Truncate queries in verbose mode to fit the length
+  self.truncate_query_size = ENV['NPLUSONE_TRUNCATE']&.to_i
 end
 
 require "n_plus_one_control/railtie" if defined?(Rails::Railtie)

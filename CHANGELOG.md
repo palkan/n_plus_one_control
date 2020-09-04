@@ -1,5 +1,7 @@
 ## master (unreleased)
 
+- Add `NPLUSONE_TRUNCATE` env var to truncate queries in verbose mode. ([@palkan][])
+
 - Support passing default filter via `NPLUSONE_FILTER` env var. ([@palkan][])
 
 - Add location tracing to SQLs in verbose mode. ([@palkan][])
