@@ -1,3 +1,7 @@
+## master (unreleased)
+
+- Enhance failure message by showing differences in table hits. ([@palkan][])
+
 ## 0.4.0 (2020-07-20)
 
 - Make scale factor available in tests via `#current_scale` method. ([@Earendil95][])

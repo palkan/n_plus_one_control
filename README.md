@@ -186,9 +186,9 @@ If you use caching you can face the problem when first request performs more DB 
 
 context "N + 1", :n_plus_one do
   populate { |n| create_list :post, n }
-  
+
   warmup { get :index } # cache something must be cached
-  
+
   specify do
     expect { get :index }.to perform_constant_number_of_queries
   end
@@ -215,7 +215,7 @@ end
 def test_no_n_plus_one
   populate = ->(n) { create_list(:post, n) }
   warmup = -> { get :index }
-  
+
   assert_perform_constant_number_of_queries population: populate, warmup: warmup do
     get :index
   end
@@ -239,6 +239,14 @@ NPlusOneControl.default_scale_factors = [2, 3]
 # Print performed queries if true in the case of failure
 # You can activate verbosity through env variable NPLUSONE_VERBOSE=1
 NPlusOneControl.verbose = false
+
+# Print table hits difference, for example:
+#
+#   Unmatched query numbers by tables:
+#     users (SELECT): 2 != 3
+#     events (INSERT): 1 != 2
+#
+self.show_table_stats = true
 
 # Ignore matching queries
 NPlusOneControl.ignore = /^(BEGIN|COMMIT|SAVEPOINT|RELEASE)/

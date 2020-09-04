@@ -56,6 +56,23 @@ describe NPlusOneControl::RSpec do
     end
   end
 
+  context "with table stats", :n_plus_one do
+    populate { |n| create_list(:post, n) }
+
+    around(:each) do |ex|
+      NPlusOneControl.show_table_stats = true
+      ex.run
+      NPlusOneControl.show_table_stats = false
+    end
+
+    specify do
+      expect do
+        expect { Post.find_each { |p| p.user.name } }
+          .to perform_constant_number_of_queries
+      end.to raise_error(RSpec::Expectations::ExpectationNotMetError, /users \(SELECT\): 2 != 3/i)
+    end
+  end
+
   context "with scale_factors", :n_plus_one do
     populate { |n| create_list(:post, n) }
 
