@@ -17,7 +17,7 @@ module NPlusOneControl
       warming_up warmup
 
       @executor = NPlusOneControl::Executor.new(
-        population: population_proc(populate),
+        population: populate || population_method,
         matching: matching || /^SELECT/i,
         scale_factors: scale_factors || NPlusOneControl.default_scale_factors
       )
@@ -39,8 +39,8 @@ module NPlusOneControl
       (warmup || methods.include?(:warmup) ? method(:warmup) : nil)&.call
     end
 
-    def population_proc(populate)
-      (populate || methods.include?(:populate) ? method(:populate) : nil)
+    def population_method
+      methods.include?(:populate) ? method(:populate) : nil
     end
   end
 end

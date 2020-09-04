@@ -46,7 +46,9 @@ class TestMinitest < Minitest::Test
       Post.find_each { |p| p.user.name }
     end
   end
+end
 
+class TestMinitestPopulateMethod < Minitest::Test
   def populate(n)
     create_list(:post, n)
   end
