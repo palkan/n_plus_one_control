@@ -1,5 +1,7 @@
 ## master (unreleased)
 
+## 0.5.0 (2020-09-07)
+
 - **Ruby 2.5+ is required**. ([@palkan][])
 
 - Add support for multiple backtrace lines in verbose output. ([@palkan][])
