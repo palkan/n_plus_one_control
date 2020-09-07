@@ -19,7 +19,7 @@ module NPlusOneControl
 
   class << self
     attr_accessor :default_scale_factors, :verbose, :show_table_stats, :ignore, :event,
-                  :backtrace_cleaner, :backtrace_length, :truncate_query_size
+      :backtrace_cleaner, :backtrace_length, :truncate_query_size
 
     attr_reader :default_matching
 
@@ -100,7 +100,7 @@ module NPlusOneControl
   self.default_scale_factors = [2, 3]
 
   # Print performed queries if true
-  self.verbose = ENV['NPLUSONE_VERBOSE'] == '1'
+  self.verbose = ENV["NPLUSONE_VERBOSE"] == "1"
 
   # Print table hits difference
   self.show_table_stats = true
@@ -111,16 +111,16 @@ module NPlusOneControl
   # ActiveSupport notifications event to track queries.
   # We track ActiveRecord event by default,
   # but can also track rom-rb events ('sql.rom') as well.
-  self.event = 'sql.active_record'
+  self.event = "sql.active_record"
 
   # Default query filtering applied if none provided explicitly
-  self.default_matching = ENV['NPLUSONE_FILTER'] || /^SELECT/i
+  self.default_matching = ENV["NPLUSONE_FILTER"] || /^SELECT/i
 
   # Truncate queries in verbose mode to fit the length
-  self.truncate_query_size = ENV['NPLUSONE_TRUNCATE']&.to_i
+  self.truncate_query_size = ENV["NPLUSONE_TRUNCATE"]&.to_i
 
   # Define the number of backtrace lines to show
-  self.backtrace_length = ENV.fetch('NPLUSONE_BACKTRACE', 1).to_i
+  self.backtrace_length = ENV.fetch("NPLUSONE_BACKTRACE", 1).to_i
 end
 
 require "n_plus_one_control/railtie" if defined?(Rails::Railtie)

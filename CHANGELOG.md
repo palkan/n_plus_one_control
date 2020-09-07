@@ -1,5 +1,7 @@
 ## master (unreleased)
 
+- **Ruby 2.5+ is required**. ([@palkan][])
+
 - Add support for multiple backtrace lines in verbose output. ([@palkan][])
 
 Could be specified via `NPLUSONE_BACKTRACE` env var.

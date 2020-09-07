@@ -1,78 +1,29 @@
+require:
+  - standard/cop/semantic_blocks
+
+inherit_gem:
+  standard: config/base.yml
+
 AllCops:
-  Include:
-    - 'lib/**/*.rb'
-    - 'lib/**/*.rake'
-    - 'spec/**/*.rb'
   Exclude:
-    - 'bin/**/*'
-    - 'spec/dummy/**/*'
+    - 'bin/*'
     - 'tmp/**/*'
-    - 'vendor/**/*'
-    - 'Rakefile'
     - 'Gemfile'
-    - '*.gemspec'
+    - 'vendor/**/*'
+    - 'gemfiles/**/*'
+    - 'lib/.rbnext/**/*'
+    - 'lib/generators/**/templates/*.rb'
   DisplayCopNames: true
-  StyleGuideCopsOnly: false
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 2.5
 
-Rails:
+Standard/SemanticBlocks:
   Enabled: false
 
-Naming/UncommunicativeMethodParamName:
-  Enabled: false
+Style/FrozenStringLiteralComment:
+  Enabled: true
 
-Naming/AccessorMethodName:
-  Enabled: false
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: no_comma
 
-Style/TrivialAccessors:
-  Enabled: false
-
-Style/Documentation:
-  Exclude:
-    - 'spec/**/*.rb'
-    - 'tests/**/*.rb'
-
-Style/StringLiterals: 
-  Enabled: false
-
-Style/RegexpLiteral:
-  Enabled: false
-
-Style/Lambda:
-  Enabled: false
-
-Layout/SpaceInsideStringInterpolation:
-  EnforcedStyle: no_space
-
-Style/ClassAndModuleChildren:
-  Enabled: false
-
-Style/BlockDelimiters:
-  Exclude:
-    - 'spec/**/*.rb'
-
-Lint/AmbiguousRegexpLiteral:
-  Enabled: false
-
-
-Metrics/MethodLength:
-  Exclude:
-    - 'spec/**/*.rb'
-
-Metrics/AbcSize:
-  Max: 20
-
-Metrics/LineLength:
-  Max: 100
-  Exclude:
-    - 'spec/**/*.rb'
-
-Metrics/BlockLength:
-  Exclude:
-    - 'spec/**/*.rb'
-
-Rails/Date:
-  Enabled: false
-
-Rails/TimeZone:
-  Enabled: false
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: no_comma

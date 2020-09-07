@@ -1,4 +1,5 @@
-[![Gem Version](https://badge.fury.io/rb/n_plus_one_control.svg)](https://rubygems.org/gems/n_plus_one_control) [![Build Status](https://travis-ci.org/palkan/n_plus_one_control.svg?branch=master)](https://travis-ci.org/palkan/n_plus_one_control)
+[![Gem Version](https://badge.fury.io/rb/n_plus_one_control.svg)](https://rubygems.org/gems/n_plus_one_control)
+![Build](https://github.com/palkan/n_plus_one_control/workflows/Build/badge.svg)
 
 # N + 1 Control
 
@@ -31,7 +32,7 @@ Add this line to your application's Gemfile:
 
 ```ruby
 group :test do
-  gem 'n_plus_one_control'
+  gem "n_plus_one_control"
 end
 ```
 
@@ -47,8 +48,6 @@ First, add NPlusOneControl to your `spec_helper.rb`:
 
 ```ruby
 # spec_helper.rb
-...
-
 require "n_plus_one_control/rspec"
 ```
 
@@ -86,10 +85,10 @@ Availables modifiers:
 ```ruby
 # You can specify the RegExp to filter queries.
 # By default, it only considers SELECT queries.
-expect { ... }.to perform_constant_number_of_queries.matching(/INSERT/)
+expect { subject }.to perform_constant_number_of_queries.matching(/INSERT/)
 
 # You can also provide custom scale factors
-expect { ... }.to perform_constant_number_of_queries.with_scale_factors(10, 100)
+expect { subject }.to perform_constant_number_of_queries.with_scale_factors(10, 100)
 ```
 
 #### Using scale factor in spec
@@ -97,7 +96,7 @@ expect { ... }.to perform_constant_number_of_queries.with_scale_factors(10, 100)
 Let's suppose your action accepts parameter, which can make impact on the number of returned records:
 
 ```ruby
-get :index, params: { per_page: 10 }
+get :index, params: {per_page: 10}
 ```
 
 Then it is enough to just change `per_page` parameter between executions and do not recreate records in DB. For this purpose, you can use `current_scale` method in your example:
@@ -107,7 +106,7 @@ context "N+1", :n_plus_one do
   before { create_list :post, 3 }
 
   specify do
-    expect { get :index, params: { per_page: current_scale } }.to perform_constant_number_of_queries
+    expect { get :index, params: {per_page: current_scale} }.to perform_constant_number_of_queries
   end
 end
 ```
@@ -118,8 +117,6 @@ First, add NPlusOneControl to your `test_helper.rb`:
 
 ```ruby
 # test_helper.rb
-...
-
 require "n_plus_one_control/minitest"
 ```
 
@@ -156,7 +153,7 @@ end
 It's possible to specify a filter via `NPLUSONE_FILTER` env var, e.g.:
 
 ```ruby
-NPLUSONE_FILTER=users bundle exec rake test
+NPLUSONE_FILTER = users bundle exec rake test
 ```
 
 You can also specify `populate` as a test class instance method:
@@ -171,6 +168,7 @@ def test_no_n_plus_one_error
     get :index
   end
 end
+
 ```
 
 As in RSpec, you can use `current_scale` factor instead of `populate` block:
@@ -178,7 +176,7 @@ As in RSpec, you can use `current_scale` factor instead of `populate` block:
 ```ruby
 def test_no_n_plus_one_error
   assert_perform_constant_number_of_queries do
-    get :index, params: { per_page: current_scale }
+    get :index, params: {per_page: current_scale}
   end
 end
 ```
@@ -261,7 +259,7 @@ NPlusOneControl.ignore = /^(BEGIN|COMMIT|SAVEPOINT|RELEASE)/
 # ActiveSupport notifications event to track queries.
 # We track ActiveRecord event by default,
 # but can also track rom-rb events ('sql.rom') as well.
-NPlusOneControl.event = 'sql.active_record'
+NPlusOneControl.event = "sql.active_record"
 
 # configure transactional behavour for populate method
 # in case of use multiple database connections
@@ -305,15 +303,15 @@ It may be useful to provide more matchers/assertions, for example:
 ```ruby
 
 # Actually, that means that it is N+1))
-assert_linear_number_of_queries { ... }
+assert_linear_number_of_queries { some_code }
 
 # But we can tune it with `coef` and handle such cases as selecting in batches
 assert_linear_number_of_queries(coef: 0.1) do
-  Post.find_in_batches { ... }
+  Post.find_in_batches { some_code }
 end
 
 # probably, also make sense to add another curve types
-assert_logarithmic_number_of_queries { ... }
+assert_logarithmic_number_of_queries { some_code }
 ```
 
 - Support custom non-SQL events.

@@ -1,4 +1,18 @@
-source 'https://rubygems.org'
+# frozen_string_literal: true
 
-# Specify your gem's dependencies in n_plus_one_control.gemspec
+source "https://rubygems.org"
+
+gem "pry-byebug", platform: :mri
+
 gemspec
+
+eval_gemfile "gemfiles/rubocop.gemfile"
+
+local_gemfile = "#{File.dirname(__FILE__)}/Gemfile.local"
+
+if File.exist?(local_gemfile)
+  eval(File.read(local_gemfile)) # rubocop:disable Security/Eval
+else
+  gem "activerecord", "~> 6.0"
+  gem "sqlite3", "~> 1.4.0"
+end

@@ -39,7 +39,7 @@ module NPlusOneControl
 
       def extract_query_source_location(locations)
         NPlusOneControl.backtrace_cleaner.call(locations.lazy)
-                       .take(NPlusOneControl.backtrace_length).to_a
+          .take(NPlusOneControl.backtrace_length).to_a
       end
     end
 

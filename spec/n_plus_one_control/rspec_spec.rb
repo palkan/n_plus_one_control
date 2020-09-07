@@ -78,7 +78,7 @@ describe NPlusOneControl::RSpec do
       around(:each) do |ex|
         NPlusOneControl.backtrace_length = 2
         ex.run
-        NPlusOneControl.backtrace_length = nil
+        NPlusOneControl.backtrace_length = 1
       end
 
       specify do
@@ -143,7 +143,7 @@ describe NPlusOneControl::RSpec do
     end
   end
 
-  context 'with warming up', :n_plus_one do
+  context "with warming up", :n_plus_one do
     let(:cache) { double "cache" }
 
     before do
@@ -160,7 +160,7 @@ describe NPlusOneControl::RSpec do
     end
   end
 
-  context 'with_warming_up', :n_plus_one do
+  context "with_warming_up", :n_plus_one do
     populate { |n| create_list(:post, n) }
 
     it "runs actual one more time" do
@@ -169,7 +169,7 @@ describe NPlusOneControl::RSpec do
     end
   end
 
-  context 'with usage of current_scale instead of populate', :n_plus_one do
+  context "with usage of current_scale instead of populate", :n_plus_one do
     it "can use current current_scale", :aggregate_failures do
       NPlusOneControl.default_scale_factors.each do |scale_factor|
         expect(Post).to receive(:limit).with(scale_factor).once

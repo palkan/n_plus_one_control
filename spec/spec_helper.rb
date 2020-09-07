@@ -1,17 +1,20 @@
 # frozen_string_literal: true
 
-$LOAD_PATH.unshift File.expand_path('../lib', __dir__)
+begin
+  require "pry-byebug"
+rescue LoadError
+end
+
 require "n_plus_one_control/rspec"
 require "benchmark"
 require "active_record"
 require "factory_girl"
-require "pry-byebug"
 
 NPlusOneControl.backtrace_cleaner = ->(locations) { locations.grep(/#{__dir__}\//) }
 
-ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
+ActiveRecord::Base.establish_connection(adapter: "sqlite3", database: ":memory:")
 
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].sort.each { |f| require f }
 
 RSpec.configure do |config|
   config.mock_with :rspec
