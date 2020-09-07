@@ -298,6 +298,8 @@ Take a look at our [Executor](https://github.com/palkan/n_plus_one_control/blob/
 
 ## What's next?
 
+- More matchers.
+
 It may be useful to provide more matchers/assertions, for example:
 
 ```ruby
@@ -313,6 +315,11 @@ end
 # probably, also make sense to add another curve types
 assert_logarithmic_number_of_queries { ... }
 ```
+
+- Support custom non-SQL events.
+
+N+1 problem is not a database specific: we can have N+1 Redis calls, N+1 HTTP external requests, etc.
+We can make `n_plus_one_control` customizable to support these scenarios (technically, we need to make it possible to handle different payload in the event subscriber).
 
 If you want to discuss or implement any of these, feel free to open an [issue](https://github.com/palkan/n_plus_one_control/issues) or propose a [pull request](https://github.com/palkan/n_plus_one_control/pulls).
 
