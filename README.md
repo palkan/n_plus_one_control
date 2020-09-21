@@ -85,10 +85,10 @@ Availables modifiers:
 ```ruby
 # You can specify the RegExp to filter queries.
 # By default, it only considers SELECT queries.
-expect { subject }.to perform_constant_number_of_queries.matching(/INSERT/)
+expect { get :index }.to perform_constant_number_of_queries.matching(/INSERT/)
 
 # You can also provide custom scale factors
-expect { subject }.to perform_constant_number_of_queries.with_scale_factors(10, 100)
+expect { get :index }.to perform_constant_number_of_queries.with_scale_factors(10, 100)
 ```
 
 #### Using scale factor in spec
