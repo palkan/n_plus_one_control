@@ -114,8 +114,8 @@ describe NPlusOneControl::RSpec do
     populate { |n| create_list(:post, n) }
 
     specify do
-      expect { Post.find_each { |p| p.user.name } }
-        .to perform_constant_number_of_queries.with_scale_factors(1, 1)
+      expect { Post.preload(:user).find_each { |p| p.user.name } }
+        .to perform_constant_number_of_queries.with_scale_factors(1, 2)
     end
   end
 
