@@ -52,7 +52,7 @@ describe NPlusOneControl::RSpec do
       expect do
         expect { Post.find_each { |p| p.user.name } }
           .to perform_constant_number_of_queries
-      end.to raise_error(RSpec::Expectations::ExpectationNotMetError, /select .+ from.*↳ .*rspec_spec.rb:\d+/im)
+      end.to raise_error(RSpec::Expectations::ExpectationNotMetError, /select .+ from.*↳ .*_spec.rb:\d+/im)
     end
 
     context "when truncate size is specified" do
@@ -87,7 +87,7 @@ describe NPlusOneControl::RSpec do
             .to perform_constant_number_of_queries
         end.to raise_error(
           RSpec::Expectations::ExpectationNotMetError,
-          /select .+ from.*↳.*rspec_spec.rb:\d+.*\n.*rspec_spec.rb:\d+/im
+          /select .+ from.*↳.*_spec.rb:\d+.*\n.*_spec.rb:\d+/im
         )
       end
     end
