@@ -26,7 +26,7 @@ module NPlusOneControl
 
       counts = queries.map(&:last).map(&:size)
 
-      assert counts.max == counts.min, NPlusOneControl.failure_message(queries)
+      assert counts.max == counts.min, NPlusOneControl.failure_message(:constant_queries, queries)
     end
 
     def current_scale

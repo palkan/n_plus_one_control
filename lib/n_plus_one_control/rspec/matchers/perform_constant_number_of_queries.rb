@@ -46,6 +46,6 @@
     raise "This matcher doesn't support negation"
   end
 
-  failure_message { |_actual| NPlusOneControl.failure_message(@queries) }
+  failure_message { |_actual| NPlusOneControl.failure_message(:constant_queries, @queries) }
 end
 # rubocop:enable  Metrics/BlockLength

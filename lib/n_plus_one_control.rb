@@ -23,8 +23,13 @@ module NPlusOneControl
 
     attr_reader :default_matching
 
-    def failure_message(queries) # rubocop:disable Metrics/MethodLength
-      msg = ["Expected to make the same number of queries, but got:\n"]
+    FAILURE_MESSAGES = {
+      constant_queries: "Expected to make the same number of queries",
+      linear_queries: "Expected to make linear number of queries"
+    }
+
+    def failure_message(type, queries) # rubocop:disable Metrics/MethodLength
+      msg = ["#{FAILURE_MESSAGES[type]}, but got:\n"]
       queries.each do |(scale, data)|
         msg << "  #{data.size} for N=#{scale}\n"
       end
