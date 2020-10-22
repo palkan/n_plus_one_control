@@ -4,6 +4,10 @@
 ::RSpec::Matchers.define :perform_linear_number_of_queries do |slope: 1|
   supports_block_expectations
 
+  chain :with_scale_factors do |*factors|
+    @factors = factors
+  end
+
   match do |actual, *_args|
     raise ArgumentError, "Block is required" unless actual.is_a? Proc
 

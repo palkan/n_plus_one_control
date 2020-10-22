@@ -50,5 +50,14 @@ describe NPlusOneControl::RSpec do
         end.to raise_error(/support negation/i)
       end
     end
+
+    context "with scale_factors", :n_plus_one do
+      populate { |n| create_list(:post, n) }
+
+      specify do
+        expect { Post.find_each { |p| p.user.name } }
+          .to perform_linear_number_of_queries(slope: 1).with_scale_factors(2, 3)
+      end
+    end
   end
 end
