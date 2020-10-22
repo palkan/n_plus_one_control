@@ -59,5 +59,31 @@ describe NPlusOneControl::RSpec do
           .to perform_linear_number_of_queries(slope: 1).with_scale_factors(2, 3)
       end
     end
+
+    context "with warming up", :n_plus_one do
+      let(:cache) { double "cache" }
+
+      before do
+        allow(cache).to receive(:setup).and_return(:result)
+      end
+
+      populate { |n| create_list(:post, n) }
+
+      warmup { cache.setup }
+
+      it "runs warmup before calling Executor" do
+        expect(cache).to receive(:setup)
+        expect { Post.find_each(&:id) }.to perform_linear_number_of_queries
+      end
+    end
+
+    context "with_warming_up", :n_plus_one do
+      populate { |n| create_list(:post, n) }
+
+      it "runs actual one more time" do
+        expect(Post).to receive(:all).exactly(NPlusOneControl.default_scale_factors.size + 1).times
+        expect { Post.all }.to perform_linear_number_of_queries.with_warming_up
+      end
+    end
   end
 end

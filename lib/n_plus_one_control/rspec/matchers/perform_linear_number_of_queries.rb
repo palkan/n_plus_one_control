@@ -8,6 +8,10 @@
     @factors = factors
   end
 
+  chain :with_warming_up do
+    @warmup = true
+  end
+
   match do |actual, *_args|
     raise ArgumentError, "Block is required" unless actual.is_a? Proc
 
@@ -15,6 +19,9 @@
       @matcher_execution_context.respond_to?(:n_plus_one_populate)
 
     populate = @matcher_execution_context.n_plus_one_populate
+    warmup = @warmup ? actual : @matcher_execution_context.n_plus_one_warmup
+
+    warmup.call if warmup.present?
 
     @matcher_execution_context.executor = NPlusOneControl::Executor.new(
       population: populate,
