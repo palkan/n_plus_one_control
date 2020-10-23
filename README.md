@@ -111,6 +111,21 @@ context "N+1", :n_plus_one do
 end
 ```
 
+#### Other available matchers
+
+`perform_linear_number_of_queries(slope: 1)` allows you to test that a query generates linear number of queries with the given slope.  
+
+```ruby
+context "when has linear query", :n_plus_one do
+  populate { |n| create_list(:post, n) }
+
+  specify do
+    expect { Post.find_each { |p| p.user.name } }
+      .to perform_linear_number_of_queries(slope: 1)
+  end
+end
+```
+
 ### Minitest
 
 First, add NPlusOneControl to your `test_helper.rb`:
