@@ -8,6 +8,10 @@
     @factors = factors
   end
 
+  chain :matching do |pattern|
+    @pattern = pattern
+  end
+
   chain :with_warming_up do
     @warmup = true
   end
