@@ -29,3 +29,4 @@ Could be specified via `NPLUSONE_BACKTRACE` env var.
 
 [@Earendil95]: https://github.com/Earendil95
 [@palkan]: https://github.com/palkan
+[@caalberts]: https://github.com/caalberts
