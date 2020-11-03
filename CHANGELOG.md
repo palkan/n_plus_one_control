@@ -1,5 +1,7 @@
 ## master (unreleased)
 
+- Fix table stats summary when queries use backticks to surround table names ([@andrewhampton])
+
 ## 0.5.0 (2020-09-07)
 
 - **Ruby 2.5+ is required**. ([@palkan][])
