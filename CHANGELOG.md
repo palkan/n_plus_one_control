@@ -1,7 +1,7 @@
 ## master (unreleased)
 
 - Fix table stats summary when queries use backticks to surround table names ([@andrewhampton])
-- Add rspec matcher for linear query. ([@caalberts][])
+- Add support to test for linear query. ([@caalberts][])
 
 ## 0.5.0 (2020-09-07)
 
