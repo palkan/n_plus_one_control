@@ -1,6 +1,6 @@
-## master (unreleased)
+## 0.6.0 (2020-11-27)
 
-- Fix table stats summary when queries use backticks to surround table names ([@andrewhampton])
+- Fix table stats summary when queries use backticks to surround table names ([@andrewhampton][])
 - Add support to test for linear query. ([@caalberts][])
 
 ## 0.5.0 (2020-09-07)
@@ -30,3 +30,4 @@ Could be specified via `NPLUSONE_BACKTRACE` env var.
 [@Earendil95]: https://github.com/Earendil95
 [@palkan]: https://github.com/palkan
 [@caalberts]: https://github.com/caalberts
+[@andrewhampton]: https://github.com/andrewhampton
