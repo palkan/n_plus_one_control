@@ -12,7 +12,7 @@ module NPlusOneControl
         def warmup
           return @warmup unless block_given?
 
-          @warmup = Proc.new
+          @warmup = Proc.new {}
         end
 
         # Setup populate callback, which is used
@@ -20,7 +20,7 @@ module NPlusOneControl
         def populate
           return @populate unless block_given?
 
-          @populate = Proc.new
+          @populate = Proc.new {}
         end
       end
 
