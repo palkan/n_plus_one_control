@@ -9,18 +9,18 @@ module NPlusOneControl
         # Setup warmup block, wich will run before matching
         # for example, if using cache, then later queries
         # will perform less DB queries than first
-        def warmup
-          return @warmup unless block_given?
+        def warmup(&block)
+          return @warmup unless block
 
-          @warmup = Proc.new
+          @warmup = block
         end
 
         # Setup populate callback, which is used
         # to prepare data for each run.
-        def populate
-          return @populate unless block_given?
+        def populate(&block)
+          return @populate unless block
 
-          @populate = Proc.new
+          @populate = block
         end
       end
 

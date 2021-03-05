@@ -25,6 +25,8 @@ jobs:
           gemfile: "gemfiles/rails5.gemfile"
         - ruby: "2.7"
           gemfile: "gemfiles/railsmaster.gemfile"
+        - ruby: "3.0"
+          gemfile: "gemfiles/rails6.gemfile"
     steps:
     - uses: actions/checkout@v2
     - uses: actions/cache@v1
