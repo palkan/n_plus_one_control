@@ -1,3 +1,11 @@
+# Change log
+
+## master
+
+## 0.6.1 (2021-03-05)
+
+- Ruby 3.0 compatibility. ([@palkan][])
+
 ## 0.6.0 (2020-11-27)
 
 - Fix table stats summary when queries use backticks to surround table names ([@andrewhampton][])
