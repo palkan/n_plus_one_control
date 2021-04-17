@@ -8,6 +8,10 @@ end
 
 class User < ActiveRecord::Base
   has_many :posts
+
+  def external_call
+    ActiveSupport::Notifications.instrument("n_plus_one_control.external_event") { true }
+  end
 end
 
 FactoryGirl.define do

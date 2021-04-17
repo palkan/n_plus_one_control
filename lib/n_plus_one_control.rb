@@ -8,14 +8,10 @@ module NPlusOneControl
   # Used to extract a table name from a query
   EXTRACT_TABLE_RXP = /(insert into|update|delete from|from) ['"`](\S+)['"`]/i.freeze
 
-  # Used to convert a query part extracted by the regexp above to the corresponding
-  # human-friendly type
-  QUERY_PART_TO_TYPE = {
-    "insert into" => "INSERT",
-    "update" => "UPDATE",
-    "delete from" => "DELETE",
-    "from" => "SELECT"
-  }.freeze
+  FAILURE_MESSAGES = {
+    constant_queries: "Expected to make the same number of queries",
+    linear_queries: "Expected to make linear number of queries"
+  }
 
   class << self
     attr_accessor :default_scale_factors, :verbose, :show_table_stats, :ignore, :event,
@@ -23,48 +19,10 @@ module NPlusOneControl
 
     attr_reader :default_matching
 
-    FAILURE_MESSAGES = {
-      constant_queries: "Expected to make the same number of queries",
-      linear_queries: "Expected to make linear number of queries"
-    }
-
     def failure_message(type, queries) # rubocop:disable Metrics/MethodLength
-      msg = ["#{FAILURE_MESSAGES[type]}, but got:\n"]
-      queries.each do |(scale, data)|
-        msg << "  #{data.size} for N=#{scale}\n"
-      end
-
-      msg.concat(table_usage_stats(queries.map(&:last))) if show_table_stats
-
-      if verbose
-        queries.each do |(scale, data)|
-          msg << "Queries for N=#{scale}\n"
-          msg << data.map { |sql| "  #{truncate_query(sql)}\n" }.join.to_s
-        end
-      end
-
-      msg.join
-    end
-
-    def table_usage_stats(runs) # rubocop:disable Metrics/MethodLength
-      msg = ["Unmatched query numbers by tables:\n"]
-
-      before, after = runs.map do |queries|
-        queries.group_by do |query|
-          matches = query.match(EXTRACT_TABLE_RXP)
-          next unless matches
-
-          "  #{matches[2]} (#{QUERY_PART_TO_TYPE[matches[1].downcase]})"
-        end.transform_values(&:count)
-      end
-
-      before.keys.each do |k|
-        next if before[k] == after[k]
-
-        msg << "#{k}: #{before[k]} != #{after[k]}\n"
-      end
-
-      msg
+      queries.first.last.keys
+        .map { |collector_key| NPlusOneControl::CollectorsRegistry.get(collector_key).failure_message(type, queries) }
+        .join("\n\n")
     end
 
     def default_matching=(val)
@@ -79,24 +37,6 @@ module NPlusOneControl
         else
           Regexp.new(val, Regexp::MULTILINE | Regexp::IGNORECASE)
         end
-    end
-
-    private
-
-    def truncate_query(sql)
-      return sql unless truncate_query_size
-
-      # Only truncate query, leave tracing (if any) as is
-      parts = sql.split(/(\s+↳)/)
-
-      parts[0] =
-        if truncate_query_size < 4
-          "..."
-        else
-          parts[0][0..(truncate_query_size - 4)] + "..."
-        end
-
-      parts.join
     end
   end
 

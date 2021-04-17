@@ -1,6 +1,8 @@
 # Change log
 
-## master
+## v1-dev
+
+- Add possibility to create custom collectors ([@Earendil95][])
 
 ## 0.6.2 (2021-10-26)
 
@@ -44,3 +46,4 @@ Could be specified via `NPLUSONE_BACKTRACE` env var.
 [@palkan]: https://github.com/palkan
 [@caalberts]: https://github.com/caalberts
 [@andrewhampton]: https://github.com/andrewhampton
+[@mrzasa]: https://github.com/mrzasa

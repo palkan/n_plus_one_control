@@ -16,6 +16,10 @@
     @warmup = true
   end
 
+  chain :to do |*collectors|
+    @collectors = collectors
+  end
+
   match(notify_expectation_failures: true) do |actual, *_args|
     raise ArgumentError, "Block is required" unless actual.is_a? Proc
 
@@ -26,6 +30,7 @@
     warmup = @warmup ? actual : @matcher_execution_context.n_plus_one_warmup
 
     warmup.call if warmup.present?
+    collectors = @collectors || :db
 
     @matcher_execution_context.executor = NPlusOneControl::Executor.new(
       population: populate,
@@ -33,14 +38,17 @@
       scale_factors: @factors
     )
 
-    @queries = @matcher_execution_context.executor.call(&actual)
+    @queries = @matcher_execution_context.executor.call(collectors: collectors, &actual)
 
     @queries.each_cons(2).all? do |pair|
       scales = pair.map(&:first)
       query_lists = pair.map(&:last)
 
-      actual_slope = (query_lists[1].size - query_lists[0].size) / (scales[1] - scales[0])
-      actual_slope <= slope
+      actual_slopes = query_lists[0].keys.map do |key|
+        (query_lists[1][key].size - query_lists[0][key].size) / (scales[1] - scales[0])
+      end
+
+      actual_slopes.all? { |actual_slope| actual_slope <= slope }
     end
   end
 

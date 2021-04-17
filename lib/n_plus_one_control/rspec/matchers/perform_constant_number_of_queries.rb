@@ -16,6 +16,10 @@
     @warmup = true
   end
 
+  chain :to do |*collectors|
+    @collectors = collectors
+  end
+
   match(notify_expectation_failures: true) do |actual, *_args|
     raise ArgumentError, "Block is required" unless actual.is_a? Proc
 
@@ -28,6 +32,7 @@
     warmup.call if warmup.present?
 
     pattern = @pattern || NPlusOneControl.default_matching
+    collectors = @collectors || :db
 
     @matcher_execution_context.executor = NPlusOneControl::Executor.new(
       population: populate,
@@ -35,11 +40,16 @@
       scale_factors: @factors
     )
 
-    @queries = @matcher_execution_context.executor.call(&actual)
+    @queries = @matcher_execution_context.executor.call(collectors: collectors, &actual)
 
-    counts = @queries.map(&:last).map(&:size)
+    counts = @queries.map { |q| q.last.transform_values(&:size) }
 
-    counts.max == counts.min
+    results = Array(collectors).map do |c|
+      counts_by_collector = counts.map { |count| count[c] }
+      [c, counts_by_collector.max == counts_by_collector.min]
+    end.to_h
+
+    results.values.all?
   end
 
   match_when_negated do |_actual|

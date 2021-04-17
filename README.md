@@ -273,6 +273,10 @@ If your `warmup` and testing procs are identical, you can use:
 expext { get :index }.to perform_constant_number_of_queries.with_warming_up # RSpec only
 ```
 
+### Non-SQL events
+
+Read, how to add support for your own event, such as external HTTP request, complex logic or whatever else [here](./custom-collectors.md)
+
 ### Configuration
 
 There are some global configuration parameters (and their corresponding defaults):
