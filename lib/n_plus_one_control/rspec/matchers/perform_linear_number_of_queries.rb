@@ -39,7 +39,7 @@
       scales = pair.map(&:first)
       query_lists = pair.map(&:last)
 
-      actual_slope = (query_lists[1].size - query_lists[0].size) / (scales[1] - scales[0])
+      actual_slope = (query_lists[1][:db].size - query_lists[0][:db].size) / (scales[1] - scales[0])
       actual_slope <= slope
     end
   end

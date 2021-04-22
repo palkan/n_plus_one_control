@@ -24,7 +24,7 @@ module NPlusOneControl
 
       queries = @executor.call { yield }
 
-      counts = queries.map(&:last).map(&:size)
+      counts = queries.map { |q| q.last[:db] }.map(&:size)
 
       assert counts.max == counts.min, NPlusOneControl.failure_message(:constant_queries, queries)
     end
@@ -71,7 +71,7 @@ module NPlusOneControl
         scales = pair.map(&:first)
         query_lists = pair.map(&:last)
 
-        actual_slope = (query_lists[1].size - query_lists[0].size) / (scales[1] - scales[0])
+        actual_slope = (query_lists[1][:db].size - query_lists[0][:db].size) / (scales[1] - scales[0])
         actual_slope <= slope
       end
     end

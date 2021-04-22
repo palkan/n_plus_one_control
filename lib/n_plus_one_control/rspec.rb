@@ -16,4 +16,6 @@ end
 ::RSpec.configure do |config|
   config.extend NPlusOneControl::RSpec::DSL::ClassMethods, n_plus_one: true
   config.include NPlusOneControl::RSpec::DSL, n_plus_one: true
+
+  config.example_status_persistence_file_path = "tmp/rspec_results"
 end

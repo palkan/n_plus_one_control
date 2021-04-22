@@ -37,7 +37,7 @@
 
     @queries = @matcher_execution_context.executor.call(&actual)
 
-    counts = @queries.map(&:last).map(&:size)
+    counts = @queries.map { |q| q.last[:db] }.map(&:size)
 
     counts.max == counts.min
   end

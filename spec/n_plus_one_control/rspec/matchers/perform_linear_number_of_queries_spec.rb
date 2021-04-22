@@ -70,9 +70,10 @@ describe NPlusOneControl::RSpec do
 
       context "with matching is provided globally", :n_plus_one do
         around(:each) do |ex|
+          old_matching = NPlusOneControl.default_matching
           NPlusOneControl.default_matching = "users"
           ex.run
-          NPlusOneControl.default_matching = nil
+          NPlusOneControl.default_matching = old_matching
         end
 
         populate { |n| create_list(:post, n) }
