@@ -2,6 +2,8 @@
 
 ## master
 
+- Fix .ignore setting (.ignore setting was ignored by the Collector ;-))
+
 ## 0.6.1 (2021-03-05)
 
 - Ruby 3.0 compatibility. ([@palkan][])

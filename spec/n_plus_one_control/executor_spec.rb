@@ -52,4 +52,23 @@ describe NPlusOneControl::Executor do
     expect(result.last[0]).to eq 3
     expect(result.last[1].size).to eq 3
   end
+
+  context "with .ignore set" do
+    around do |example|
+      old_ignore = NPlusOneControl.ignore
+      NPlusOneControl.ignore = /^SELECT\s+"posts"\.\*\s+FROM\s+"posts"/
+      example.call
+      NPlusOneControl.ignore = old_ignore
+    end
+
+    it "ignores queries matching .ignore regex" do
+      result = described_class.new(
+        population: populate
+      ).call(&observable)
+      expect(result.first[0]).to eq 2
+      expect(result.first[1].size).to eq 2
+      expect(result.last[0]).to eq 3
+      expect(result.last[1].size).to eq 3
+    end
+  end
 end
