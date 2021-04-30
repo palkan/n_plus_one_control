@@ -21,6 +21,7 @@ module NPlusOneControl
 
       def callback(_name, _start, _finish, _message_id, values) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/LineLength
         return if %w[CACHE SCHEMA].include? values[:name]
+        return if values[:sql].match?(NPlusOneControl.ignore)
 
         return unless @pattern.nil? || (values[:sql] =~ @pattern)
 
