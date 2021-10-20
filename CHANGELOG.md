@@ -3,6 +3,7 @@
 ## master
 
 - Fix .ignore setting (.ignore setting was ignored by the Collector ;-))
+- Fix rspec matchers to allow expectations inside execution block
 
 ## 0.6.1 (2021-03-05)
 

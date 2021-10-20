@@ -111,6 +111,20 @@ context "N+1", :n_plus_one do
 end
 ```
 
+### Expectations in execution block
+
+Both rspec matchers allows you to put additional expectations inside execution block to ensure that tested piece of code actually does what expected.
+
+```ruby
+context "N+1", :n_plus_one do
+  specify do
+    expect do
+      expect(my_query).to eq(actuall_results)
+    end.to perform_constant_number_of_queries
+  end
+end
+```
+
 #### Other available matchers
 
 `perform_linear_number_of_queries(slope: 1)` allows you to test that a query generates linear number of queries with the given slope.  
