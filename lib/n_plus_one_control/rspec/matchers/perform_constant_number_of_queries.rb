@@ -16,7 +16,7 @@
     @warmup = true
   end
 
-  match do |actual, *_args|
+  match(notify_expectation_failures: true) do |actual, *_args|
     raise ArgumentError, "Block is required" unless actual.is_a? Proc
 
     raise "Missing tag :n_plus_one" unless

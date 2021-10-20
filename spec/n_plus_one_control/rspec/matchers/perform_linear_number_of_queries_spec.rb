@@ -51,6 +51,14 @@ describe NPlusOneControl::RSpec do
       end
     end
 
+    context "when actual block fails expectations", :n_plus_one do
+      specify do
+        expect do
+          expect { expect(1).to eq(0) }.to perform_linear_number_of_queries
+        end.to raise_error(RSpec::Expectations::ExpectationNotMetError, /expected: 0\n\s+got: 1/)
+      end
+    end
+
     context "with scale_factors", :n_plus_one do
       populate { |n| create_list(:post, n) }
 
