@@ -1,49 +1,11 @@
 # frozen_string_literal: true
 
+require "n_plus_one_control/collectors/db"
+
 module NPlusOneControl
   # Runs code for every scale factor
   # and returns collected queries.
   class Executor
-    # Subscribes to ActiveSupport notifications and collect matching queries.
-    class Collector
-      def initialize(pattern)
-        @pattern = pattern
-      end
-
-      def call
-        @queries = []
-        ActiveSupport::Notifications
-          .subscribed(method(:callback), NPlusOneControl.event) do
-          yield
-        end
-        @queries
-      end
-
-      def callback(_name, _start, _finish, _message_id, values) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/LineLength
-        return if %w[CACHE SCHEMA].include? values[:name]
-        return if values[:sql].match?(NPlusOneControl.ignore)
-
-        return unless @pattern.nil? || (values[:sql] =~ @pattern)
-
-        query = values[:sql]
-
-        if NPlusOneControl.backtrace_cleaner && NPlusOneControl.verbose
-          source = extract_query_source_location(caller)
-
-          query = "#{query}\n    ↳ #{source.join("\n")}" unless source.empty?
-        end
-
-        @queries << query
-      end
-
-      private
-
-      def extract_query_source_location(locations)
-        NPlusOneControl.backtrace_cleaner.call(locations.lazy)
-          .take(NPlusOneControl.backtrace_length).to_a
-      end
-    end
-
     class << self
       attr_accessor :transaction_begin
       attr_accessor :transaction_rollback
@@ -66,17 +28,20 @@ module NPlusOneControl
     end
 
     # rubocop:disable Metrics/MethodLength
-    def call
+    def call(collectors: :db)
       raise ArgumentError, "Block is required!" unless block_given?
 
       results = []
-      collector = Collector.new(matching)
+      active_collectors = CollectorsRegistry.slice(*Array(collectors)).transform_values { |c| c.new(matching) }
 
       (scale_factors || NPlusOneControl.default_scale_factors).each do |scale|
         @current_scale = scale
         with_transaction do
           population&.call(scale)
-          results << [scale, collector.call { yield }]
+          active_collectors.values.each(&:subscribe)
+          yield
+          results << [scale, active_collectors.transform_values(&:queries)]
+          active_collectors.values.each(&:reset)
         end
       end
       results

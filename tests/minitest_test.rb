@@ -46,6 +46,40 @@ class TestMinitestConstantQueries < Minitest::Test
       Post.find_each { |p| p.user.name }
     end
   end
+
+  def test_constant_queries_with_custom_collector
+    another_collector = NPlusOneControl::Collectors::DB.dup.tap { |collector| collector.key = :secondary_db }
+    NPlusOneControl::CollectorsRegistry.register(another_collector)
+
+    populate = ->(n) { create_list(:post, n) }
+
+    assert_perform_constant_number_of_queries(populate: populate, collectors: :secondary_db) do
+      Post.preload(:user).find_each { |p| p.user.name }
+    end
+  ensure
+    NPlusOneControl::CollectorsRegistry.unregister(another_collector)
+  end
+
+  def test_n_plus_one_queries_with_custom_collector
+    another_collector = NPlusOneControl::Collectors::DB.dup.tap do |collector|
+      collector.key = :secondary_db
+      collector.name = nil
+    end
+
+    NPlusOneControl::CollectorsRegistry.register(another_collector)
+
+    populate = ->(n) { create_list(:post, n) }
+
+    e = assert_raises Minitest::Assertion do
+      assert_perform_constant_number_of_queries(populate: populate, collectors: :secondary_db) do
+        Post.find_each { |p| p.user.name }
+      end
+    end
+
+    assert_match "SECONDARY_DB", e.message
+  ensure
+    NPlusOneControl::CollectorsRegistry.unregister(another_collector)
+  end
 end
 
 class TestMinitestLinearQueries < Minitest::Test
@@ -99,6 +133,40 @@ class TestMinitestLinearQueries < Minitest::Test
     ) do
       Post.find_each { |p| p.user.name }
     end
+  end
+
+  def test_linear_queries_with_custom_collector
+    another_collector = NPlusOneControl::Collectors::DB.dup.tap { |collector| collector.key = :secondary_db }
+    NPlusOneControl::CollectorsRegistry.register(another_collector)
+
+    populate = ->(n) { create_list(:post, n) }
+
+    assert_perform_linear_number_of_queries(slope: 1, populate: populate, collectors: :secondary_db) do
+      Post.find_each { |p| p.user.name }
+    end
+  ensure
+    NPlusOneControl::CollectorsRegistry.unregister(another_collector)
+  end
+
+  def test_n_plus_one_queries_with_custom_collector
+    another_collector = NPlusOneControl::Collectors::DB.dup.tap do |collector|
+      collector.key = :secondary_db
+      collector.name = nil
+    end
+
+    NPlusOneControl::CollectorsRegistry.register(another_collector)
+
+    populate = ->(n) { create_list(:post, n) }
+
+    e = assert_raises Minitest::Assertion do
+      assert_perform_linear_number_of_queries(slope: 1, populate: populate, collectors: :secondary_db) do
+        Post.find_each { |p| "#{p.user.name} #{p.category.name}" }
+      end
+    end
+
+    assert_match "SECONDARY_DB", e.message
+  ensure
+    NPlusOneControl::CollectorsRegistry.unregister(another_collector)
   end
 end
 

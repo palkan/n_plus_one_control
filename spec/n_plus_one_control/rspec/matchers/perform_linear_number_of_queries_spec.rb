@@ -78,9 +78,10 @@ describe NPlusOneControl::RSpec do
 
       context "with matching is provided globally", :n_plus_one do
         around(:each) do |ex|
+          old_matching = NPlusOneControl.default_matching
           NPlusOneControl.default_matching = "users"
           ex.run
-          NPlusOneControl.default_matching = nil
+          NPlusOneControl.default_matching = old_matching
         end
 
         populate { |n| create_list(:post, n) }
@@ -115,6 +116,52 @@ describe NPlusOneControl::RSpec do
       it "runs actual one more time" do
         expect(Post).to receive(:all).exactly(NPlusOneControl.default_scale_factors.size + 1).times
         expect { Post.all }.to perform_linear_number_of_queries.with_warming_up
+      end
+    end
+
+    context "with custom collector" do
+      before { NPlusOneControl::CollectorsRegistry.register(another_collector) }
+      after { NPlusOneControl::CollectorsRegistry.unregister(another_collector) }
+
+      let(:another_collector) do
+        NPlusOneControl::Collectors::DB.dup.tap do |collector|
+          collector.key = :secondary_db
+          collector.name = nil
+          collector.event = "sql.active_record"
+        end
+      end
+
+      context "when has linear query", :n_plus_one do
+        populate { |n| create_list(:post, n) }
+
+        specify do
+          expect { Post.find_each { |p| p.user.name } }
+            .to perform_linear_number_of_queries(slope: 1).to(:secondary_db)
+        end
+      end
+
+      context "when has linear query larger than expected slope", :n_plus_one do
+        populate { |n| create_list(:post, n) }
+
+        specify do
+          expect do
+            expect { Post.find_each { |p| "#{p.user.name} #{p.category.name}" } }
+              .to perform_linear_number_of_queries(slope: 1).to(:secondary_db)
+          end.to raise_error(RSpec::Expectations::ExpectationNotMetError, /SECONDARY_DB/)
+        end
+      end
+
+      context "when collector has name", :n_plus_one do
+        before { another_collector.name = "secondary database" }
+
+        populate { |n| create_list(:post, n) }
+
+        specify do
+          expect do
+            expect { Post.find_each { |p| "#{p.user.name} #{p.category.name}" } }
+              .to perform_linear_number_of_queries(slope: 1).to(:secondary_db)
+          end.to raise_error(RSpec::Expectations::ExpectationNotMetError, /secondary database/)
+        end
       end
     end
   end
