@@ -11,7 +11,7 @@ describe NPlusOneControl::RSpec do
         expect do
           expect { Post.preload(:user).find_each { |p| p.user.name } }
             .to perform_linear_number_of_queries(slope: 1)
-        end.not_to raise_error(RSpec::Expectations::ExpectationNotMetError)
+        end.not_to raise_error
       end
     end
 
