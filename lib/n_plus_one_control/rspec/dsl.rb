@@ -6,7 +6,7 @@ module NPlusOneControl
     module DSL
       # Extends RSpec ExampleGroup with populate & warmup methods
       module ClassMethods
-        # Setup warmup block, wich will run before matching
+        # Setup warmup block, which will run before matching
         # for example, if using cache, then later queries
         # will perform less DB queries than first
         def warmup(&block)

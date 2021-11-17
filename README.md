@@ -270,7 +270,7 @@ end
 If your `warmup` and testing procs are identical, you can use:
 
 ```ruby
-expext { get :index }.to perform_constant_number_of_queries.with_warming_up # RSpec only
+expect { get :index }.to perform_constant_number_of_queries.with_warming_up # RSpec only
 ```
 
 ### Configuration
@@ -302,7 +302,7 @@ NPlusOneControl.ignore = /^(BEGIN|COMMIT|SAVEPOINT|RELEASE)/
 # but can also track rom-rb events ('sql.rom') as well.
 NPlusOneControl.event = "sql.active_record"
 
-# configure transactional behavour for populate method
+# configure transactional behaviour for populate method
 # in case of use multiple database connections
 NPlusOneControl::Executor.tap do |executor|
   connections = ActiveRecord::Base.connection_handler.connection_pool_list.map(&:connection)
@@ -326,7 +326,7 @@ NPlusOneControl.backtrace_cleaner = ->(locations_array) { do_some_filtering(loca
 NPlusOneControl.backtrace_length = 1
 
 # Sometime queries could be too large to provide any meaningful insight.
-# You can configure an output length limit for quries in verbose mode by setting the follwing option
+# You can configure an output length limit for quries in verbose mode by setting the following option
 # NOTE: It could be specified via NPLUSONE_TRUNCATE env var
 NPlusOneControl.truncate_query_size = 100
 ```
