@@ -72,12 +72,33 @@ end
 
 ```ruby
 # BAD – won't work!
-
 subject { get :index }
 
 specify do
   expect { subject }.to perform_constant_number_of_queries
 end
+
+# GOOD
+specify do
+  expect { get :index }.to perform_constant_number_of_queries
+end
+
+# BAD — the `page` record would be removed from the database
+# but still present in RSpec (due to `let`'s memoization)
+let(:page) { create(:page) }
+
+populate { |n| create_list(:comment, n, page: page) }
+
+specify do
+  expect { get :show, params: {id: page.id} }.to perform_constant_number_of_queries
+end
+
+# GOOD
+# Ensure the record is created before `populate`
+let!(:page) { create(:page) }
+
+populate { |n| create_list(:comment, n, page: page) }
+# ...
 ```
 
 Availables modifiers:
