@@ -17,6 +17,8 @@ NPlusOneControl works differently. It evaluates the code under consideration sev
 
 So, it's for _performance_ testing and not _feature_ testing.
 
+> Read also ["Squash N+1 queries early with n_plus_one_control test matchers for Ruby and Rails"](https://evilmartians.com/chronicles/squash-n-plus-one-queries-early-with-n-plus-one-control-test-matchers-for-ruby-and-rails).
+
 ### Why not just use [`bullet`](https://github.com/flyerhzm/bullet)?
 
 Of course, it's possible to use Bullet in tests (see more [here](https://evilmartians.com/chronicles/fighting-the-hydra-of-n-plus-one-queries)), but it's not a _silver bullet_: there can be both false positives and true negatives.
