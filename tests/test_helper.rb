@@ -14,7 +14,7 @@ Thread.abort_on_exception = true
 require "n_plus_one_control/minitest"
 require "benchmark"
 require "active_record"
-require "factory_girl"
+require "factory_bot"
 
 ActiveRecord::Base.establish_connection(adapter: "sqlite3", database: ":memory:")
 
@@ -33,4 +33,4 @@ module TransactionalTests
 end
 
 Minitest::Test.prepend TransactionalTests
-Minitest::Test.include FactoryGirl::Syntax::Methods
+Minitest::Test.include FactoryBot::Syntax::Methods

@@ -10,8 +10,8 @@ class Category < ActiveRecord::Base
   has_many :posts
 end
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :category do
-    name "Category"
+    name { "Category" }
   end
 end

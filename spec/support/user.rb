@@ -10,8 +10,8 @@ class User < ActiveRecord::Base
   has_many :posts
 end
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :user do
-    name "John"
+    name { "John" }
   end
 end
