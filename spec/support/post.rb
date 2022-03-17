@@ -13,9 +13,9 @@ class Post < ActiveRecord::Base
   belongs_to :category
 end
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :post do
-    title "Title"
+    title { "Title" }
     user
     category
   end
