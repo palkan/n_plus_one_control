@@ -16,14 +16,14 @@ Gem::Specification.new do |spec|
     Evaluates code under consideration several times with different scale factors
     to make sure that the number of DB queries behaves as expected (i.e. O(1) instead of O(N)).
   }
-  spec.homepage = "http://github.com/palkan/n_plus_one_control"
+  spec.homepage = "https://github.com/palkan/n_plus_one_control"
   spec.license = "MIT"
   spec.metadata = {
-    "bug_tracker_uri" => "http://github.com/palkan/n_plus_one_control/issues",
-    "changelog_uri" => "https://github.com/palkan/n_plus_one_control/blob/master/CHANGELOG.md",
-    "documentation_uri" => "http://github.com/palkan/n_plus_one_control",
-    "homepage_uri" => "http://github.com/palkan/n_plus_one_control",
-    "source_code_uri" => "http://github.com/palkan/n_plus_one_control"
+    "bug_tracker_uri" => "#{spec.homepage}/issues",
+    "changelog_uri" => "#{spec.homepage}/blob/master/CHANGELOG.md",
+    "documentation_uri" => spec.homepage,
+    "homepage_uri" => spec.homepage,
+    "source_code_uri" => spec.homepage
   }
 
   spec.files = Dir.glob("lib/**/*") + %w[README.md LICENSE.txt CHANGELOG.md]
