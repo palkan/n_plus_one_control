@@ -12,6 +12,10 @@
     @pattern = pattern
   end
 
+  chain :exactly do |pattern|
+    @exactly = pattern
+  end
+
   chain :with_warming_up do
     @warmup = true
   end
@@ -32,20 +36,20 @@
     @matcher_execution_context.executor = NPlusOneControl::Executor.new(
       population: populate,
       matching: pattern,
-      scale_factors: @factors
+      scale_factors: @exactly ? [1] : @factors
     )
 
     @queries = @matcher_execution_context.executor.call(&actual)
 
     counts = @queries.map(&:last).map(&:size)
 
-    counts.max == counts.min
+    counts.max == (@exactly || counts.min)
   end
 
   match_when_negated do |_actual|
     raise "This matcher doesn't support negation"
   end
 
-  failure_message { |_actual| NPlusOneControl.failure_message(:constant_queries, @queries) }
+  failure_message { |_actual| NPlusOneControl.failure_message(@exactly ? :number_of_queries : :constant_queries, @queries) }
 end
 # rubocop:enable  Metrics/BlockLength

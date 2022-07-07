@@ -5,6 +5,30 @@ require "n_plus_one_control"
 module NPlusOneControl
   # Minitest assertions
   module MinitestHelper
+    def assert_number_of_queries(
+      number,
+      populate: nil,
+      matching: nil,
+      warmup: nil
+    )
+
+      raise ArgumentError, "Block is required" unless block_given?
+
+      warming_up warmup
+
+      @executor = NPlusOneControl::Executor.new(
+        population: populate || population_method,
+        matching: (matching || NPlusOneControl.default_matching),
+        scale_factors: [1]
+      )
+
+      queries = @executor.call { yield }
+
+      counts = queries.map(&:last).map(&:size)
+
+      assert_equal number, counts.max, NPlusOneControl.failure_message(:number_of_queries, queries)
+    end
+
     def assert_perform_constant_number_of_queries(
       populate: nil,
       matching: nil,
