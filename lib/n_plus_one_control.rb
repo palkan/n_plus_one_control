@@ -25,7 +25,8 @@ module NPlusOneControl
 
     FAILURE_MESSAGES = {
       constant_queries: "Expected to make the same number of queries",
-      linear_queries: "Expected to make linear number of queries"
+      linear_queries: "Expected to make linear number of queries",
+      number_of_queries: "Expected to make the specified number of queries"
     }
 
     def failure_message(type, queries) # rubocop:disable Metrics/MethodLength
@@ -59,9 +60,10 @@ module NPlusOneControl
       end
 
       before.keys.each do |k|
-        next if before[k] == after[k]
+        next if before[k] == after&.fetch(k, nil)
 
-        msg << "#{k}: #{before[k]} != #{after[k]}\n"
+        after_value = after ? " != #{after[k]}" : ""
+        msg << "#{k}: #{before[k]}#{after_value}\n"
       end
 
       msg
