@@ -59,7 +59,7 @@ module NPlusOneControl
     private
 
     def warming_up(warmup)
-      (warmup || methods.include?(:warmup) ? method(:warmup) : nil)&.call
+      (warmup || (methods.include?(:warmup) ? method(:warmup) : nil))&.call
     end
 
     def population_method
