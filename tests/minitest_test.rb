@@ -46,6 +46,20 @@ class TestMinitestConstantQueries < Minitest::Test
       Post.find_each { |p| p.user.name }
     end
   end
+
+  def test_no_n_plus_one_error_with_warmup
+    populate = ->(n) { create_list(:post, n) }
+    warmed_up = false
+
+    assert_perform_constant_number_of_queries(
+      populate: populate,
+      warmup: -> { warmed_up = true }
+    ) do
+      true
+    end
+
+    assert warmed_up
+  end
 end
 
 class TestMinitestLinearQueries < Minitest::Test
