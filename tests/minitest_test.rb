@@ -151,7 +151,7 @@ class TestMinitestLinearQueries < Minitest::Test
 end
 
 class TestMinitestPopulateMethod < Minitest::Test
-  def populate(n)
+  private def populate(n)
     create_list(:post, n)
   end
 

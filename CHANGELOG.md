@@ -2,6 +2,8 @@
 
 ## master
 
+- Recognize private `#populate` and `#warmup` methods in Minitest classes. ([@palkan][])
+
 ## 0.7.0 (2023-02-17)
 
 - Added ability to specify the exact number of expected queries when using constant matchers. ([@akostadinov][], [@palkan][])

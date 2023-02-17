@@ -64,11 +64,13 @@ module NPlusOneControl
     private
 
     def warming_up(warmup)
-      (warmup || (methods.include?(:warmup) ? method(:warmup) : nil))&.call
+      own_methods = methods(false) + private_methods(false)
+      (warmup || (own_methods.include?(:warmup) ? method(:warmup) : nil))&.call
     end
 
     def population_method
-      methods.include?(:populate) ? method(:populate) : nil
+      own_methods = methods(false) + private_methods(false)
+      own_methods.include?(:populate) ? method(:populate) : nil
     end
 
     def linear?(queries, slope:)
