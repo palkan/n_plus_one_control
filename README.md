@@ -189,7 +189,7 @@ You can also use `assert_perform_linear_number_of_queries` to test for linear qu
 ```ruby
 def test_no_n_plus_one_error
   populate = ->(n) { create_list(:post, n) }
-  
+
   assert_perform_linear_number_of_queries(slope: 1, populate: populate) do
     Post.find_each { |p| p.user.name }
   end

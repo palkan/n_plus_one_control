@@ -2,6 +2,8 @@
 
 ## master
 
+- **Require Ruby 2.7+**.
+
 ## 0.6.2 (2021-10-26)
 
 - Fix .ignore setting (.ignore setting was ignored by the Collector ;-))

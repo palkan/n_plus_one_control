@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email = ["dementiev.vm@gmail.com"]
 
   spec.summary = "RSpec and Minitest matchers to prevent N+1 queries problem"
-  spec.required_ruby_version = ">= 2.5.0"
+  spec.required_ruby_version = ">= 2.7.0"
   spec.description = %{
     RSpec and Minitest matchers to prevent N+1 queries problem.
 
