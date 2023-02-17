@@ -112,6 +112,9 @@ expect { get :index }.to perform_constant_number_of_queries.matching(/INSERT/)
 
 # You can also provide custom scale factors
 expect { get :index }.to perform_constant_number_of_queries.with_scale_factors(10, 100)
+
+# You can specify the exact number of expected queries
+expect { get :index }.to perform_constant_number_of_queries.exactly(1)
 ```
 
 #### Using scale factor in spec
@@ -211,6 +214,14 @@ assert_perform_constant_number_of_queries(
   matching: /INSERT/
 ) do
   do_some_havey_stuff
+end
+```
+
+For the constant matcher, you can also specify the expected number of queries as the first argument:
+
+```ruby
+assert_perform_constant_number_of_queries(2, populate: populate) do
+  get :index
 end
 ```
 

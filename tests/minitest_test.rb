@@ -2,42 +2,6 @@
 
 require_relative "test_helper"
 
-class TestMinitestSpecifiedQueries < Minitest::Test
-  def test_queries_match
-    populate = ->(n) { create_list(:post, n) }
-
-    assert_number_of_queries(1, populate: populate) do
-      Post.take
-    end
-  end
-
-  def test_queries_do_not_match
-    populate = ->(n) { create_list(:post, n) }
-
-    e = assert_raises Minitest::Assertion do
-      assert_number_of_queries(0, populate: populate) do
-        Post.take
-      end
-    end
-
-    assert_match "Expected to make the specified number of queries", e.message
-    assert_match "1 for N=1", e.message
-    assert_match(/posts \(SELECT\): 1$/, e.message)
-  end
-
-  def test_no_n_plus_one_error_with_matching
-    populate = ->(n) { create_list(:post, n) }
-
-    assert_number_of_queries(
-      1,
-      populate: populate,
-      matching: /posts/
-    ) do
-      Post.find_each { |p| p.user.name }
-    end
-  end
-end
-
 class TestMinitestConstantQueries < Minitest::Test
   def test_no_n_plus_one_error
     populate = ->(n) { create_list(:post, n) }
@@ -95,6 +59,40 @@ class TestMinitestConstantQueries < Minitest::Test
     end
 
     assert warmed_up
+  end
+
+  def test_exact_number_queries_match
+    populate = ->(n) { create_list(:post, n) }
+
+    assert_perform_constant_number_of_queries(1, populate: populate) do
+      Post.take
+    end
+  end
+
+  def test_exact_number_queries_do_not_match
+    populate = ->(n) { create_list(:post, n) }
+
+    e = assert_raises Minitest::Assertion do
+      assert_perform_constant_number_of_queries(0, populate: populate, scale_factors: [1]) do
+        Post.take
+      end
+    end
+
+    assert_match "Expected to make the specified number of queries", e.message
+    assert_match "1 for N=1", e.message
+    assert_match(/posts \(SELECT\): 1$/, e.message)
+  end
+
+  def test_exact_number_error_with_matching
+    populate = ->(n) { create_list(:post, n) }
+
+    assert_perform_constant_number_of_queries(
+      1,
+      populate: populate,
+      matching: /posts/
+    ) do
+      Post.find_each { |p| p.user.name }
+    end
   end
 end
 

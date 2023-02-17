@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable  Metrics/BlockLength
 ::RSpec::Matchers.define :perform_constant_number_of_queries do
   supports_block_expectations
 
@@ -43,7 +42,11 @@
 
     counts = @queries.map(&:last).map(&:size)
 
-    counts.max == (@exactly || counts.min)
+    if @exactly
+      counts.all? { _1 == @exactly }
+    else
+      counts.max == counts.min
+    end
   end
 
   match_when_negated do |_actual|
@@ -52,4 +55,3 @@
 
   failure_message { |_actual| NPlusOneControl.failure_message(@exactly ? :number_of_queries : :constant_queries, @queries) }
 end
-# rubocop:enable  Metrics/BlockLength

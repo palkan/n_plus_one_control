@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable  Metrics/BlockLength
 ::RSpec::Matchers.define :perform_linear_number_of_queries do |slope: 1|
   supports_block_expectations
 
@@ -50,4 +49,3 @@
 
   failure_message { |_actual| NPlusOneControl.failure_message(:linear_queries, @queries) }
 end
-# rubocop:enable  Metrics/BlockLength

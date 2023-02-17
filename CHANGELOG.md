@@ -2,6 +2,22 @@
 
 ## master
 
+- Added ability to specify the exact number of expected queries when using constant matchers. ([@akostadinov][], [@palkan][])
+
+For RSpec, you can add the `.exactly` modifier:
+
+```ruby
+expect { get :index }.to perform_constant_number_of_queries.exactly(1)
+```
+
+For Minitest, you can provide the expected number of queries as the first argument:
+
+```ruby
+assert_perform_constant_number_of_queries(0, **options) do
+  get :index
+end
+```
+
 - **Require Ruby 2.7+**.
 
 ## 0.6.2 (2021-10-26)
@@ -46,3 +62,4 @@ Could be specified via `NPLUSONE_BACKTRACE` env var.
 [@palkan]: https://github.com/palkan
 [@caalberts]: https://github.com/caalberts
 [@andrewhampton]: https://github.com/andrewhampton
+[@akostadinov]: https://github.com/akostadinov
