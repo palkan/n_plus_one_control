@@ -3,7 +3,7 @@
 require "minitest/autorun"
 
 begin
-  require "pry-byebug"
+  require "debug" unless ENV["CI"] == "true"
 rescue LoadError
 end
 
