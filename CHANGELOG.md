@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.7.1 (2023-02-17)
+
 - Recognize private `#populate` and `#warmup` methods in Minitest classes. ([@palkan][])
 
 ## 0.7.0 (2023-02-17)
