@@ -2,6 +2,8 @@
 
 ## master
 
+- add ability to ignore queries cached by the ORM with the new option `ignore_cached_queries` ([@gagalago][])
+
 ## 0.7.1 (2023-02-17)
 
 - Recognize private `#populate` and `#warmup` methods in Minitest classes. ([@palkan][])

@@ -71,4 +71,32 @@ describe NPlusOneControl::Executor do
       expect(result.last[1].size).to eq 3
     end
   end
+
+  context "with .ignore_cached_queries" do
+    let(:user) { create(:user) }
+    let(:populate) do
+      ->(n) { create_list(:post, n, user: user) }
+    end
+
+    let(:observable) do
+      -> { User.cache { Post.find_each(&:user) } }
+    end
+
+    around do |example|
+      old_ignore = NPlusOneControl.ignore_cached_queries
+      NPlusOneControl.ignore_cached_queries = true
+      example.call
+      NPlusOneControl.ignore_cached_queries = old_ignore
+    end
+
+    it "ignore queries already executed that are now in cache" do
+      result = described_class.new(population: populate).call(&observable)
+
+      expect(result.size).to eq 2
+      expect(result.first[0]).to eq 2
+      expect(result.first[1].size).to eq 2
+      expect(result.last[0]).to eq 3
+      expect(result.last[1].size).to eq 2
+    end
+  end
 end
