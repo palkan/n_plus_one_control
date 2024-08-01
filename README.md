@@ -331,6 +331,10 @@ self.show_table_stats = true
 # Ignore matching queries
 NPlusOneControl.ignore = /^(BEGIN|COMMIT|SAVEPOINT|RELEASE)/
 
+# Ignore queries in cache 
+# https://guides.rubyonrails.org/configuring.html#configuring-query-cache
+NPlusOneControl.ignore_cached_queries = false
+
 # ActiveSupport notifications event to track queries.
 # We track ActiveRecord event by default,
 # but can also track rom-rb events ('sql.rom') as well.

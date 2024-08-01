@@ -19,7 +19,7 @@ module NPlusOneControl
 
   class << self
     attr_accessor :default_scale_factors, :verbose, :show_table_stats, :ignore, :event,
-      :backtrace_cleaner, :backtrace_length, :truncate_query_size
+      :backtrace_cleaner, :backtrace_length, :truncate_query_size, :ignore_cached_queries
 
     attr_reader :default_matching
 
@@ -114,6 +114,9 @@ module NPlusOneControl
 
   # Ignore matching queries
   self.ignore = /^(BEGIN|COMMIT|SAVEPOINT|RELEASE)/
+
+  # Ignore queries cached
+  self.ignore_cached_queries = false
 
   # ActiveSupport notifications event to track queries.
   # We track ActiveRecord event by default,
