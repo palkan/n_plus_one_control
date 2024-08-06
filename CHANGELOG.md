@@ -2,7 +2,9 @@
 
 ## master
 
-- add ability to ignore queries cached by the ORM with the new option `ignore_cached_queries` ([@gagalago][])
+## 0.7.2 (2024-08-06)
+
+- Add ability to ignore queries cached by the ORM with the new option `ignore_cached_queries` ([@gagalago][])
 
 ## 0.7.1 (2023-02-17)
 
@@ -71,3 +73,4 @@ Could be specified via `NPLUSONE_BACKTRACE` env var.
 [@caalberts]: https://github.com/caalberts
 [@andrewhampton]: https://github.com/andrewhampton
 [@akostadinov]: https://github.com/akostadinov
+[@gagalago]: https://github.com/gagalago
