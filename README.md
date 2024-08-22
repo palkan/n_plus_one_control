@@ -364,7 +364,7 @@ NPlusOneControl.backtrace_cleaner = ->(locations_array) { do_some_filtering(loca
 NPlusOneControl.backtrace_length = 1
 
 # Sometime queries could be too large to provide any meaningful insight.
-# You can configure an output length limit for quries in verbose mode by setting the following option
+# You can configure an output length limit for queries in verbose mode by setting the following option
 # NOTE: It could be specified via NPLUSONE_TRUNCATE env var
 NPlusOneControl.truncate_query_size = 100
 ```
