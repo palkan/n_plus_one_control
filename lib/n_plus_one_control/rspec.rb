@@ -7,6 +7,7 @@ require "n_plus_one_control/rspec/dsl"
 require "n_plus_one_control/rspec/matchers/perform_constant_number_of_queries"
 require "n_plus_one_control/rspec/matchers/perform_linear_number_of_queries"
 require "n_plus_one_control/rspec/context"
+require "n_plus_one_control/rspec/isolator" if defined?(::Isolator)
 
 module NPlusOneControl
   module RSpec # :nodoc:
