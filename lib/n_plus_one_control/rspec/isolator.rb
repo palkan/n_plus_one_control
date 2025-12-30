@@ -1,4 +1,4 @@
-RSpec.configure do |config|
+::RSpec.configure do |config|
   config.before(:begin, :n_plus_one) do
     ::Isolator.incr_thresholds!
   end
