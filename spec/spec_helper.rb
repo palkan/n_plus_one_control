@@ -25,11 +25,11 @@ RSpec.configure do |config|
 
   config.include FactoryBot::Syntax::Methods
 
-  config.before(:each) do
+  config.before do
     ActiveRecord::Base.connection.begin_transaction(joinable: false)
   end
 
-  config.after(:each) do
+  config.after do
     ActiveRecord::Base.connection.rollback_transaction
   end
 end

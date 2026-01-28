@@ -14,12 +14,12 @@ module NPlusOneControl
         @queries = []
         ActiveSupport::Notifications
           .subscribed(method(:callback), NPlusOneControl.event) do
-          yield
+            yield
         end
         @queries
       end
 
-      def callback(_name, _start, _finish, _message_id, values) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/LineLength
+      def callback(_name, _start, _finish, _message_id, values) # rubocop:disable Metrics/CyclomaticComplexity,Layout/LineLength
         return if %w[CACHE SCHEMA].include? values[:name]
         return if values[:sql].match?(NPlusOneControl.ignore)
         return if values[:cached] && NPlusOneControl.ignore_cached_queries

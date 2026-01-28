@@ -331,7 +331,7 @@ self.show_table_stats = true
 # Ignore matching queries
 NPlusOneControl.ignore = /^(BEGIN|COMMIT|SAVEPOINT|RELEASE)/
 
-# Ignore queries in cache 
+# Ignore queries in cache
 # https://guides.rubyonrails.org/configuring.html#configuring-query-cache
 NPlusOneControl.ignore_cached_queries = false
 

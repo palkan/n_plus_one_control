@@ -12,7 +12,6 @@ module NPlusOneControl
       scale_factors: nil,
       warmup: nil
     )
-
       raise ArgumentError, "Block is required" unless block_given?
 
       warming_up warmup
@@ -41,7 +40,6 @@ module NPlusOneControl
       scale_factors: nil,
       warmup: nil
     )
-
       raise ArgumentError, "Block is required" unless block_given?
 
       warming_up warmup

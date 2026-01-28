@@ -77,7 +77,7 @@ describe NPlusOneControl::RSpec do
       end
 
       context "with matching is provided globally", :n_plus_one do
-        around(:each) do |ex|
+        around do |ex|
           NPlusOneControl.default_matching = "users"
           ex.run
           NPlusOneControl.default_matching = nil

@@ -6,7 +6,7 @@ require "n_plus_one_control/executor"
 # RSpec and Minitest matchers to prevent N+1 queries problem.
 module NPlusOneControl
   # Used to extract a table name from a query
-  EXTRACT_TABLE_RXP = /(insert into|update|delete from|from) ['"`](\S+)['"`]/i.freeze
+  EXTRACT_TABLE_RXP = /(insert into|update|delete from|from) ['"`](\S+)['"`]/i
 
   # Used to convert a query part extracted by the regexp above to the corresponding
   # human-friendly type

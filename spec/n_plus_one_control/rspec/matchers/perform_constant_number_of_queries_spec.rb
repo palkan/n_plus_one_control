@@ -50,7 +50,7 @@ describe NPlusOneControl::RSpec do
   context "when verbose", :n_plus_one do
     populate { |n| create_list(:post, n) }
 
-    around(:each) do |ex|
+    around do |ex|
       NPlusOneControl.verbose = true
       ex.run
       NPlusOneControl.verbose = false
@@ -66,7 +66,7 @@ describe NPlusOneControl::RSpec do
     context "when truncate size is specified" do
       populate { |n| create_list(:post, n) }
 
-      around(:each) do |ex|
+      around do |ex|
         NPlusOneControl.truncate_query_size = 6
         ex.run
         NPlusOneControl.truncate_query_size = nil
@@ -83,7 +83,7 @@ describe NPlusOneControl::RSpec do
     context "when backtrace length is specified" do
       populate { |n| create_list(:post, n) }
 
-      around(:each) do |ex|
+      around do |ex|
         NPlusOneControl.backtrace_length = 2
         ex.run
         NPlusOneControl.backtrace_length = 1
@@ -104,7 +104,7 @@ describe NPlusOneControl::RSpec do
   context "with table stats", :n_plus_one do
     populate { |n| create_list(:post, n) }
 
-    around(:each) do |ex|
+    around do |ex|
       NPlusOneControl.show_table_stats = true
       ex.run
       NPlusOneControl.show_table_stats = false
@@ -136,7 +136,7 @@ describe NPlusOneControl::RSpec do
     end
 
     context "with matching is provided globally", :n_plus_one do
-      around(:each) do |ex|
+      around do |ex|
         NPlusOneControl.default_matching = "posts"
         ex.run
         NPlusOneControl.default_matching = nil

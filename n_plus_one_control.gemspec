@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email = ["dementiev.vm@gmail.com"]
 
   spec.summary = "RSpec and Minitest matchers to prevent N+1 queries problem"
-  spec.required_ruby_version = ">= 2.7.0"
+  spec.required_ruby_version = ">= 3.1.0"
   spec.description = %{
     RSpec and Minitest matchers to prevent N+1 queries problem.
 
@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
   spec.files = Dir.glob("lib/**/*") + %w[README.md LICENSE.txt CHANGELOG.md]
   spec.require_paths = ["lib"]
 
+  spec.add_development_dependency "benchmark"
   spec.add_development_dependency "bundler", ">= 1.10"
   spec.add_development_dependency "rake", ">= 13.0"
   spec.add_development_dependency "rspec", "~> 3.5"
