@@ -2,6 +2,12 @@
 
 ## master
 
+## 0.8.0 (2026-01-28)
+
+- Ruby 3.1+ is required.
+
+- Added Isolator support.
+
 ## 0.7.2 (2024-08-06)
 
 - Add ability to ignore queries cached by the ORM with the new option `ignore_cached_queries` ([@gagalago][])
