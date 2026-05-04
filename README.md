@@ -326,7 +326,7 @@ NPlusOneControl.verbose = false
 #     users (SELECT): 2 != 3
 #     events (INSERT): 1 != 2
 #
-self.show_table_stats = true
+NPlusOneControl.show_table_stats = true
 
 # Ignore matching queries
 NPlusOneControl.ignore = /^(BEGIN|COMMIT|SAVEPOINT|RELEASE)/
