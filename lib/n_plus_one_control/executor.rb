@@ -14,7 +14,7 @@ module NPlusOneControl
         @queries = []
         ActiveSupport::Notifications
           .subscribed(method(:callback), NPlusOneControl.event) do
-            yield
+          yield
         end
         @queries
       end
