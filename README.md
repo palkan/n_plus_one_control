@@ -27,7 +27,7 @@ This gem was born after I've found myself not able to verify with a test yet ano
 
 <br/>
 
-<img src="https://cdn.evilmartians.com/badges/logo-no-label.svg" alt="Evil Martians logo" width="22" height="16" /> <b>N+1 Control</b> is built by <b><a href="https://evilmartians.com/">Evil Martians</a></b>, an American design and engineering consultancy for <b>developer tools, AI, and cybersecurity startups</b>.
+<img src="https://cdn.evilmartians.com/badges/logo-no-label.svg" alt="Evil Martians logo" width="22" height="16" /> <b>N+1 Control</b> is built by <b><a href="https://evilmartians.com/">Evil Martians</a></b>, an American design and engineering consultancy for <b>developer tools, AI, and cybersecurity startups</b>. Slow Rails app? Our <a href="https://evilmartians.com/services/rails-performance-audit?utm_source=n_plus_one_control">Rails performance audit</a> finds the N+1s and ships the fixes.
 
 ## Installation
 
